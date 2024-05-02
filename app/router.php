@@ -3,19 +3,31 @@
 $routes = [
     '/' => [
         'file' => 'views/home.php',
-        'title' => 'Home'
+        'title' => 'Accueil'
     ],
     '/avis' => [
         'file' => 'views/review.php',
         'title' => 'Avis'
     ],
+    '/habitats' => [
+        'file' => 'views/habitats.php',
+        'title' => 'Les habitats'
+    ],
+    '/services' => [
+        'file' => 'views/services.php',
+        'title' => 'Nos services'
+    ],
     '/contact' => [
         'file' => 'views/contact.php',
         'title' => 'Contact'
     ],
+    '/connection' => [
+        'file' => 'views/connection.php',
+        'title' => 'Connexion'
+    ],
     '/404' => [
         'file' => 'views/404.php',
-        'title' => 'Error 404'
+        'title' => 'Erreur 404'
     ]
 ];
 

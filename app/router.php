@@ -1,6 +1,4 @@
 <?php
-// router.php
-
 // Define routes
 $routes = [
     '/' => [

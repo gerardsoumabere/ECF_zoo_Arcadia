@@ -1,6 +1,6 @@
 <?php
-require_once '/app/router.php';// Include router file
-require_once '/app/dbconnect.php';// Include the database configuration file
+require_once 'app/router.php';// Include router file
+require_once 'app/dbconnect.php';// Include the database configuration file
 
 ?>
 <!DOCTYPE html>
@@ -13,6 +13,7 @@ require_once '/app/dbconnect.php';// Include the database configuration file
 </head>
 
 <body>
+
     <?php echo $content; ?>
 </body>
 

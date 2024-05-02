@@ -2,15 +2,15 @@
 // Define routes
 $routes = [
     '/' => [
-        'file' => 'views/index/home.php',
+        'file' => 'views/home.php',
         'title' => 'Home'
     ],
     '/avis' => [
-        'file' => 'views/index/review.php',
+        'file' => 'views/review.php',
         'title' => 'Avis'
     ],
     '/contact' => [
-        'file' => 'views/index/contact.php',
+        'file' => 'views/contact.php',
         'title' => 'Contact'
     ],
     '/404' => [

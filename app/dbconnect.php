@@ -5,7 +5,7 @@ require_once 'config/dbconfig.php';
 // Function to connect to the database using PDO
 function connectDB() {
     try {
-        // Set DSN (Data Source Name)
+        // Set Data Source Name
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
         // Create a new PDO instance
         $conn = new PDO($dsn, DB_USERNAME, DB_PASSWORD);

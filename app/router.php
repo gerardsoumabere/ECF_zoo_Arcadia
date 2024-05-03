@@ -5,8 +5,8 @@ $routes = [
         'file' => 'views/home.php',
         'title' => 'Accueil'
     ],
-    '/avis' => [
-        'file' => 'views/review.php',
+    '/reviews' => [
+        'file' => 'views/reviews.php',
         'title' => 'Avis'
     ],
     '/habitats' => [

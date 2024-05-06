@@ -7,7 +7,6 @@ require_once __DIR__ . '/../models/Service.php';
 use Models\Service;
 
 class ServiceController {
-    private $services = array();
     private $conn;
 
     public function __construct($conn) {
@@ -24,67 +23,92 @@ class ServiceController {
 
             // Récupérer les résultats de la requête
             while ($row = $stmt->fetch()) {
-                $service = new Service($row['title'], $row['image'], $row['description'], $this->conn);
+                $service = new Service($row['id'], $row['title'], $row['image'], $row['description'], $this->conn); 
                 $services[] = $service;
             }
 
             return $services; // Retourner les services
         } catch (\PDOException $e) {
             // Gérer les erreurs de base de données
-            echo "Error: " . $e->getMessage();
+            echo "Erreur : " . $e->getMessage();
         }
     }
 
-    // Afficher un service
-    public function show($index) {
-        if (isset($this->services[$index])) {
-            $service = $this->services[$index];
-            require 'views/serviceShow.php';
-        } else {
-            echo "Service non trouvé";
+    // Récupérer un service par son ID
+    public function getById($id) {
+        try {
+            // Requête SQL pour récupérer un service par son ID
+            $sql = "SELECT * FROM services WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            $row = $stmt->fetch();
+
+            // Créer et retourner un objet Service
+            return new Service($row['id'], $row['title'], $row['image'], $row['description'], $this->conn);
+        } catch (\PDOException $e) {
+            // Gérer les erreurs de base de données
+            echo "Erreur : " . $e->getMessage();
         }
     }
 
     // Ajouter un service
-    public function add() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Récupérer les données du formulaire
-            $title = $_POST["title"];
-            $image = $_POST["image"];
-            $description = $_POST["description"];
-
+    public function add($title, $image, $description) {
+        try {
             // Créer un nouveau service
-            $service = new Service($title, $image, $description, $this->conn);
-
+            $service = new Service(null, $title, $image, $description, $this->conn);
             // Ajouter le nouveau service à la base de données
             $service->save();
 
-            // Rediriger vers la liste des services
+            // Rediriger vers la route /services
             header("Location: /services");
             exit();
+        } catch (\PDOException $e) {
+            // Gérer les erreurs de base de données
+            echo "Erreur : " . $e->getMessage();
         }
     }
 
     // Mettre à jour un service
-    public function update($index, $title, $image, $description) {
-        if (isset($this->services[$index])) {
-            $service = $this->services[$index];
-            $service->setTitle($title);
-            $service->setImage($image);
-            $service->setDescription($description);
-            $this->index(); // Rediriger vers la liste des services
-        } else {
-            echo "Service non trouvé";
+    public function update() {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Récupérer les données du formulaire
+            $id = $_POST["id"];
+            $title = $_POST["title"];
+            $image = $_POST["image"];
+            $description = $_POST["description"];
+
+            try {
+                // Récupérer le service à mettre à jour
+                $service = $this->getById($id);
+                $service->setTitle($title);
+                $service->setImage($image);
+                $service->setDescription($description);
+                $service->update();
+                
+                // Rediriger vers la route /services
+                header("Location: /services");
+                exit();
+            } catch (\PDOException $e) {
+                // Gérer les erreurs de base de données
+                echo "Erreur : " . $e->getMessage();
+            }
         }
     }
 
     // Supprimer un service
-    public function delete($index) {
-        if (isset($this->services[$index])) {
-            array_splice($this->services, $index, 1);
-            $this->index(); // Rediriger vers la liste des services
-        } else {
-            echo "Service non trouvé";
+    public function delete($id) {
+        try {
+            // Supprimer le service
+            $service = $this->getById($id);
+            $service->delete();
+            
+            // Rediriger vers la route /services
+            header("Location: /services");
+            exit();
+        } catch (\PDOException $e) {
+            // Gérer les erreurs de base de données
+            echo "Erreur : " . $e->getMessage();
         }
     }
 }

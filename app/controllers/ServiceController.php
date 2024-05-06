@@ -12,19 +12,27 @@ class ServiceController {
 
     public function __construct($conn) {
         $this->conn = $conn;
-        // Initialisation avec quelques services 
-        $service1 = new Service("Service 1", "image1.jpg", "Description du service 1", $this->conn);
-        $service2 = new Service("Service 2", "image2.jpg", "Description du service 2", $this->conn);
-        $service3 = new Service("Service 3", "image3.jpg", "Description du service 3", $this->conn);
-
-        $this->services[] = $service1;
-        $this->services[] = $service2;
-        $this->services[] = $service3;
     }
 
     // Afficher tous les services
     public function index() {
-        return $this->services; // Retourner les services
+        try {
+            $services = array();
+            // Requête SQL pour récupérer tous les services depuis la base de données
+            $sql = "SELECT * FROM services";
+            $stmt = $this->conn->query($sql);
+
+            // Récupérer les résultats de la requête
+            while ($row = $stmt->fetch()) {
+                $service = new Service($row['title'], $row['image'], $row['description'], $this->conn);
+                $services[] = $service;
+            }
+
+            return $services; // Retourner les services
+        } catch (\PDOException $e) {
+            // Gérer les erreurs de base de données
+            echo "Error: " . $e->getMessage();
+        }
     }
 
     // Afficher un service

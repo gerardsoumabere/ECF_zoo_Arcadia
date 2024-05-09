@@ -4,11 +4,16 @@ require_once __DIR__.'/dbconnect.php';
 
 // Include the ServiceController
 require_once __DIR__.'/controllers/ServiceController.php';
+// Include the HabitatController
+require_once __DIR__.'/controllers/HabitatController.php';
 
 use Controllers\ServiceController;
+use Controllers\HabitatController;
 
 // Create an instance of ServiceController
 $serviceController = new ServiceController($conn);
+// Create an instance of HabitatController
+$habitatController = new HabitatController($conn);
 
 // Define routes
 $routes = [
@@ -21,7 +26,7 @@ $routes = [
         'title' => 'Avis'
     ],
     '/habitats' => [
-        'file' => 'views/habitats.php',
+        'file' => 'views/habitats_display.php',
         'title' => 'Les habitats'
     ],
     '/services' => [
@@ -55,53 +60,66 @@ $routes = [
     ],
     '/services/add/process' => [
         'file' => 'controllers/ServiceController.php',
-        'method' => 'add' // Méthode à appeler dans le ServiceController
+        'method' => 'add', // Méthode à appeler dans le ServiceController
+        'controller' => $serviceController // Instance du ServiceController
     ],
 
     '/services/edit/process' => [
         'file' => 'controllers/ServiceController.php',
-        'method' => 'update' // Méthode à appeler dans le ServiceController
+        'method' => 'update', // Méthode à appeler dans le ServiceController
+        'controller' => $serviceController // Instance du ServiceController
     ],
 
     '/services/delete/process' => [
         'file' => 'controllers/ServiceController.php',
-        'method' => 'delete' // Méthode à appeler dans le ServiceController
+        'method' => 'delete', // Méthode à appeler dans le ServiceController
+        'controller' => $serviceController // Instance du ServiceController
+    ],
+    '/habitats/edit' => [
+        'file' => 'views/habitat_form_edit.php',
+        'title' => 'Modifier un habitat'
+    ],
+    '/habitats/delete' => [
+        'file' => 'views/habitat_delete.php',
+        'title' => 'Supprimer un habitat'
+    ],
+    '/habitats/add' => [
+        'file' => 'views/habitat_form_add.php',
+        'title' => 'Ajouter un habitat'
+    ],
+    '/habitats/add/process' => [
+        'file' => 'controllers/HabitatController.php',
+        'method' => 'add', // Méthode à appeler dans le HabitatController
+        'controller' => $habitatController // Instance du HabitatController
+    ],
+    '/habitats/edit/process' => [
+        'file' => 'controllers/HabitatController.php',
+        'method' => 'update', // Méthode à appeler dans le HabitatController
+        'controller' => $habitatController // Instance du HabitatController
+    ],
+    '/habitats/delete/process' => [
+        'file' => 'controllers/HabitatController.php',
+        'method' => 'delete', // Méthode à appeler dans le HabitatController
+        'controller' => $habitatController // Instance du HabitatController
     ],
 ];
 
 // Function to get the page content
 function getPageContent($route)
 {
-    global $routes, $conn, $serviceController; // Ajout de $conn et $serviceController ici
+    global $routes, $conn; // Ajout de $conn ici
     if (array_key_exists($route, $routes)) {
         if (isset($routes[$route]['method'])) {
-            // Si une méthode est définie, appeler la méthode appropriée du ServiceController
+            // Si une méthode est définie, appeler la méthode appropriée du ServiceController ou du HabitatController
             $method = $routes[$route]['method'];
-            if ($method == 'add') {
-                // Récupérer les données du formulaire pour ajouter un service
-                $title = $_POST["title"];
-                $image = $_POST["image"];
-                $description = $_POST["description"];
-                // Appeler la méthode add avec les données récupérées
-                $serviceController->$method($title, $image, $description);
-                return ['content' => '', 'title' => '']; // Pas besoin de renvoyer du contenu ou un titre pour ces routes
-            } else if ($method == 'update') {
-                // Récupérer les données du formulaire pour modifier un service
-                $id = $_POST["id"];
-                $title = $_POST["title"];
-                $image = $_POST["image"];
-                $description = $_POST["description"];
-                // Appeler la méthode update avec les données récupérées
-                $serviceController->$method($id, $title, $image, $description);
-                return ['content' => '', 'title' => '']; // Pas besoin de renvoyer du contenu ou un titre pour ces routes
-            } else if ($method == 'delete') {
-                // Récupérer l'ID du service à supprimer
-                $id = $_POST["id"]; // Utiliser $_POST pour récupérer l'ID du service à supprimer
-                $serviceController->$method($id); // Passer l'ID du service à supprimer à la méthode delete
-                return ['content' => '', 'title' => '']; // Pas besoin de renvoyer du contenu ou un titre pour ces routes
+            $controller = $routes[$route]['controller'];
+            if ($method == 'add' || $method == 'update' || $method == 'delete') {
+                // Récupérer les données du formulaire
+                $requestData = $_POST;
+                // Appeler la méthode avec les données du formulaire
+                return $controller->$method($requestData);
             } else {
-                $serviceController->$method(); // Pour les autres méthodes, pas besoin de données supplémentaires
-                return ['content' => '', 'title' => '']; // Pas besoin de renvoyer du contenu ou un titre pour ces routes
+                return $controller->$method();
             }
         } else {
             $title = $routes[$route]['title'];

@@ -4,13 +4,13 @@ session_start();
 
 // Include the database configuration file
 require_once __DIR__.'/../dbconnect.php'; 
-// Include ServiceController
-require_once __DIR__.'/../controllers/ServiceController.php';
+// Include HabitatController
+require_once __DIR__.'/../controllers/HabitatController.php';
 
-use Controllers\ServiceController;
+use Controllers\HabitatController;
 
-// Create an instance of ServiceController
-$serviceController = new ServiceController($conn);
+// Create an instance of HabitatController
+$habitatController = new HabitatController($conn);
 
 // Chemin du répertoire de destination des images
 $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/public/assets/gallery/";
@@ -32,35 +32,37 @@ if(isset($_POST["submitImage"])) {
 }
 
 // Vérifier si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitService"])) {
-    $title = $_POST["title"];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitHabitat"])) {
+    $name = $_POST["name"];
     $description = $_POST["description"];
-    $image = "/public" . $_SESSION['newfileurl']; // Utiliser le chemin de l'image de la session
+    $animalList = $_POST["animal_list"];
+    $images = "/public" . $_SESSION['newfileurl']; // Utiliser le chemin de l'image de la session
+    $habitatComment = $_POST["habitat_comment"];
     
-    // Appeler la méthode pour ajouter un service
-    $serviceController->add($title, $image, $description);
+    // Appeler la méthode pour ajouter un habitat
+    $habitatController->add($name, $images, $description, $animalList, $habitatComment);
 }
 ?>
 
 <div class="container">
-    <h2>Ajouter un service</h2>
+    <h2>Ajouter un habitat</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="/services/add" method="post">
+            <form action="/habitats/add" method="post">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Titre du
-                        service:</label>
-                    <input type="text" class="form-control" id="title"
-                        name="title" value="Titre de test">
+                    <label for="name" class="form-label">Nom de
+                        l'habitat:</label>
+                    <input type="text" class="form-control" id="name"
+                        name="name" value="Savane">
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Image:</label>
                     <input type="text" class="form-control" id="image"
                         name="image"
-                        value="<?php echo isset($_SESSION['newfileurl']) ? "/public".$_SESSION['newfileurl'] : ""; ?>"
+                        value="<?php echo isset($_SESSION['newfileurl']) ? "/public" .$_SESSION['newfileurl'] : ""; ?>"
                         readonly>
                     <?php if(isset($_SESSION['newfileurl'])) { ?>
-                    <img src="<?php echo "/public".$_SESSION['newfileurl']; ?>"
+                    <img src="<?php  echo "/public".$_SESSION['newfileurl']; ?>"
                         class="img-fluid" alt="Image téléchargée">
                     <?php } ?>
                 </div>
@@ -70,15 +72,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitService"])) {
                     <textarea class="form-control" id="description"
                         name="description">Description de test</textarea>
                 </div>
+                <div class="mb-3">
+                    <label for="animal_list" class="form-label">Liste des
+                        animaux:</label>
+                    <input type="text" class="form-control" id="animal_list"
+                        name="animal_list" value="Lion, Éléphant, Zèbre">
+                </div>
+                <div class="mb-3">
+                    <label for="habitat_comment" class="form-label">Commentaire
+                        habitat:</label>
+                    <textarea class="form-control" id="habitat_comment"
+                        name="habitat_comment">Cet environnement est caractérisé par de vastes plaines herbeuses et un climat sec.</textarea>
+                </div>
                 <button type="submit" class="btn btn-primary"
-                    name="submitService">Enregistrer</button>
+                    name="submitHabitat">Enregistrer</button>
             </form>
         </div>
     </div>
 </div>
 
 <div class="container mt-5">
-    <form action="/services/add" method="post" enctype="multipart/form-data">
+    <form action="/habitats/add" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="fileToUpload">Sélectionnez une image à télécharger
                 :</label>

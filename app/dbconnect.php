@@ -6,6 +6,9 @@ require_once 'config/dbconfig.php';
 // Include the Service class
 require_once 'Models/Service.php';
 
+// Include the Habitat class
+require_once 'Models/Habitat.php';
+
 // Function to connect to the database using PDO
 function connectDB() {
     try {
@@ -27,6 +30,16 @@ function connectDB() {
                         title VARCHAR(255) NOT NULL,
                         image VARCHAR(255) NOT NULL,
                         description TEXT
+                    )");
+
+        // Create the table for the Habitat class if it doesn't exist
+        $conn->exec("CREATE TABLE IF NOT EXISTS habitats (
+                        id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                        name VARCHAR(255) NOT NULL,
+                        images VARCHAR(255) NOT NULL,
+                        description TEXT,
+                        animal_list TEXT,
+                        habitat_comment TEXT
                     )");
 
         return $conn;

@@ -1,4 +1,9 @@
 <?php
+require_once __DIR__ . '/../controllers/ServiceController.php'; // inclure le fichier ServiceController.php
+
+// Créer une instance de ServiceController
+$serviceController = new \Controllers\ServiceController($conn);
+
 // Récupérer l'ID du service à supprimer depuis l'URL
 $id = $_GET['id'] ?? null;
 

@@ -23,7 +23,7 @@ class ServiceController {
 
             // Récupérer les résultats de la requête
             while ($row = $stmt->fetch()) {
-                $service = new Service($row['id'], $row['title'], $row['image'], $row['description'], $this->conn); 
+                $service = new Service($row['title'], $row['image'], $row['description'], $this->conn); 
                 $services[] = $service;
             }
 
@@ -45,7 +45,7 @@ class ServiceController {
             $row = $stmt->fetch();
 
             // Créer et retourner un objet Service
-            return new Service($row['id'], $row['title'], $row['image'], $row['description'], $this->conn);
+            return new Service($row['title'], $row['image'], $row['description'], $this->conn);
         } catch (\PDOException $e) {
             // Gérer les erreurs de base de données
             echo "Erreur : " . $e->getMessage();
@@ -56,7 +56,7 @@ class ServiceController {
     public function add($title, $image, $description) {
         try {
             // Créer un nouveau service
-            $service = new Service(null, $title, $image, $description, $this->conn);
+            $service = new Service($title, $image, $description, $this->conn);
             // Ajouter le nouveau service à la base de données
             $service->save();
 

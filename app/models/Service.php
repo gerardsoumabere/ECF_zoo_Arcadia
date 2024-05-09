@@ -9,8 +9,9 @@ class Service {
     private $description;
     private $conn;
 
-    public function __construct($id, $title, $image, $description, $conn) {
-    $this->id = $id; // Définir l'ID
+    //public function __construct($id, $title, $image, $description, $conn) {
+    public function __construct($title, $image, $description, $conn) {
+    // $this->id = $id; // Définir l'ID
     $this->title = $title;
     $this->image = $image;
     $this->description = $description;

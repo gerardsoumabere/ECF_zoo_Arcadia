@@ -1,5 +1,4 @@
 <?php
-
 namespace Models;
 
 class Service {
@@ -9,20 +8,21 @@ class Service {
     private $description;
     private $conn;
 
-    //public function __construct($id, $title, $image, $description, $conn) {
-    public function __construct($title, $image, $description, $conn) {
-    // $this->id = $id; // Définir l'ID
-    $this->title = $title;
-    $this->image = $image;
-    $this->description = $description;
-    $this->conn = $conn;
-}
-
+    public function __construct($id,$title, $image, $description, $conn) {
+        $this->id = $id;
+        $this->title = $title;
+        $this->image = $image;
+        $this->description = $description;
+        $this->conn = $conn;
+    }
 
     public function getId() { 
         return $this->id;
     }
 
+        public function setId($id) { 
+        $this->id = $id;
+    }
     public function getTitle() {
         return $this->title;
     }
@@ -47,23 +47,30 @@ class Service {
         $this->description = $description;
     }
 
-    // Méthode pour ajouter le service à la base de données
-    public function save() {
-        try {
-            // Requête SQL pour insérer un nouveau service dans la table services
-            $sql = "INSERT INTO services (title, image, description) VALUES (:title, :image, :description)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':title', $this->title);
-            $stmt->bindParam(':image', $this->image);
-            $stmt->bindParam(':description', $this->description);
-            $stmt->execute();
+   // Méthode pour ajouter le service à la base de données
+public function save() {
+    try {
+        // Requête SQL pour insérer un nouveau service dans la table services
+        $sql = "INSERT INTO services (title, image, description) VALUES (:title, :image, :description)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':title', $this->title);
+        $stmt->bindParam(':image', $this->image);
+        $stmt->bindParam(':description', $this->description);
+        $stmt->execute();
 
-            echo ('Le service a été rentré dans la base de données');
-        } catch (\PDOException $e) {
-            // Gérer les erreurs de base de données
-            echo "Error: " . $e->getMessage();
-        }
+        // Récupérer l'ID du service ajouté
+        $this->id = $this->conn->lastInsertId();
+
+        // Affichage d'un message de débogage pour vérifier l'ID
+        echo "ID du service ajouté : " . $this->id;
+
+        echo ('Le service a été rentré dans la base de données avec l\'ID ' . $this->id);
+    } catch (\PDOException $e) {
+        // Gérer les erreurs de base de données
+        echo "Error: " . $e->getMessage();
     }
+}
+
 
     // Méthode pour mettre à jour le service dans la base de données
     public function update() {

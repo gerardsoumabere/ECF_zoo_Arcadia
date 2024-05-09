@@ -11,8 +11,9 @@ $serviceController = new ServiceController($conn);
 
 // Call the index method to get the services
 $services = $serviceController->index();
+var_dump($services);
 
-var_dump($_POST);
+
 
 ?>
 
@@ -21,6 +22,7 @@ var_dump($_POST);
     <h1>Liste des services</h1>
 
     <?php foreach ($services as $service): ?>
+    <?php var_dump($service); ?>
     <div class="service">
         <h2>ID : <?php echo $service->getId(); ?></h2> <!-- Afficher l'ID -->
         <h3><?php echo $service->getTitle(); ?></h3>

@@ -29,7 +29,7 @@ $routes = [
         'title' => 'Nos services'
     ],
     '/contact' => [
-        'file' => 'views/contact.php',
+        'file' => 'views/contact_form.php',
         'title' => 'Contact'
     ],
     '/connection' => [

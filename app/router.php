@@ -1,12 +1,21 @@
 <?php
-// Include the database configuration file
 require_once __DIR__.'/dbconnect.php'; 
 
+// Include ServiceController
+require_once __DIR__.'/controllers/ServiceController.php';
+// Include HabitatController
+require_once __DIR__.'/controllers/HabitatController.php';
 // Include AnimalController
 require_once __DIR__.'/controllers/AnimalController.php';
 
+use Controllers\ServiceController;
+use Controllers\HabitatController;
 use Controllers\AnimalController;
 
+// Create an instance of ServiceController
+$serviceController = new ServiceController($conn);
+// Create an instance of HabitatController
+$habitatController = new HabitatController($conn);
 // Create an instance of AnimalController
 $animalController = new AnimalController($conn);
 
@@ -69,6 +78,33 @@ $routes = [
         'file' => 'controllers/ServiceController.php',
         'method' => 'delete', // Méthode à appeler dans le ServiceController
         'controller' => $serviceController // Instance du ServiceController
+    ],
+    '/habitats/edit' => [
+        'file' => 'views/habitat_form_edit.php',
+        'title' => 'Modifier un habitat'
+    ],
+    '/habitats/delete' => [
+        'file' => 'views/habitat_delete.php',
+        'title' => 'Supprimer un habitat'
+    ],
+    '/habitats/add' => [
+        'file' => 'views/habitat_form_add.php',
+        'title' => 'Ajouter un habitat'
+    ],
+    '/habitats/add/process' => [
+        'file' => 'controllers/HabitatController.php',
+        'method' => 'add', // Méthode à appeler dans le HabitatController
+        'controller' => $habitatController // Instance du HabitatController
+    ],
+    '/habitats/edit/process' => [
+        'file' => 'controllers/HabitatController.php',
+        'method' => 'update', // Méthode à appeler dans le HabitatController
+        'controller' => $habitatController // Instance du HabitatController
+    ],
+    '/habitats/delete/process' => [
+        'file' => 'controllers/HabitatController.php',
+        'method' => 'delete', // Méthode à appeler dans le HabitatController
+        'controller' => $habitatController // Instance du HabitatController
     ],
     '/animals' => [
         'file' => 'views/animals_display.php',

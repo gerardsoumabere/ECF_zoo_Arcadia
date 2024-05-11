@@ -2,18 +2,13 @@
 // Include the database configuration file
 require_once __DIR__.'/dbconnect.php'; 
 
-// Include the ServiceController
-require_once __DIR__.'/controllers/ServiceController.php';
-// Include the HabitatController
-require_once __DIR__.'/controllers/HabitatController.php';
+// Include AnimalController
+require_once __DIR__.'/controllers/AnimalController.php';
 
-use Controllers\ServiceController;
-use Controllers\HabitatController;
+use Controllers\AnimalController;
 
-// Create an instance of ServiceController
-$serviceController = new ServiceController($conn);
-// Create an instance of HabitatController
-$habitatController = new HabitatController($conn);
+// Create an instance of AnimalController
+$animalController = new AnimalController($conn);
 
 // Define routes
 $routes = [
@@ -75,32 +70,36 @@ $routes = [
         'method' => 'delete', // Méthode à appeler dans le ServiceController
         'controller' => $serviceController // Instance du ServiceController
     ],
-    '/habitats/edit' => [
-        'file' => 'views/habitat_form_edit.php',
-        'title' => 'Modifier un habitat'
+    '/animals' => [
+        'file' => 'views/animals_display.php',
+        'title' => 'Les animaux'
     ],
-    '/habitats/delete' => [
-        'file' => 'views/habitat_delete.php',
-        'title' => 'Supprimer un habitat'
+    '/animals/edit' => [
+        'file' => 'views/animal_form_edit.php',
+        'title' => 'Modifier un animal'
     ],
-    '/habitats/add' => [
-        'file' => 'views/habitat_form_add.php',
-        'title' => 'Ajouter un habitat'
+    '/animals/delete' => [
+        'file' => 'views/animal_delete.php',
+        'title' => 'Supprimer un animal'
     ],
-    '/habitats/add/process' => [
-        'file' => 'controllers/HabitatController.php',
-        'method' => 'add', // Méthode à appeler dans le HabitatController
-        'controller' => $habitatController // Instance du HabitatController
+    '/animals/add' => [
+        'file' => 'views/animal_form_add.php',
+        'title' => 'Ajouter un animal'
     ],
-    '/habitats/edit/process' => [
-        'file' => 'controllers/HabitatController.php',
-        'method' => 'update', // Méthode à appeler dans le HabitatController
-        'controller' => $habitatController // Instance du HabitatController
+    '/animals/add/process' => [
+        'file' => 'controllers/AnimalController.php',
+        'method' => 'add', // Méthode à appeler dans le AnimalController
+        'controller' => $animalController // Instance du AnimalController
     ],
-    '/habitats/delete/process' => [
-        'file' => 'controllers/HabitatController.php',
-        'method' => 'delete', // Méthode à appeler dans le HabitatController
-        'controller' => $habitatController // Instance du HabitatController
+    '/animals/edit/process' => [
+        'file' => 'controllers/AnimalController.php',
+        'method' => 'update', // Méthode à appeler dans le AnimalController
+        'controller' => $animalController // Instance du AnimalController
+    ],
+    '/animals/delete/process' => [
+        'file' => 'controllers/AnimalController.php',
+        'method' => 'delete', // Méthode à appeler dans le AnimalController
+        'controller' => $animalController // Instance du AnimalController
     ],
 ];
 
@@ -110,7 +109,7 @@ function getPageContent($route)
     global $routes, $conn; // Ajout de $conn ici
     if (array_key_exists($route, $routes)) {
         if (isset($routes[$route]['method'])) {
-            // Si une méthode est définie, appeler la méthode appropriée du ServiceController ou du HabitatController
+            // Si une méthode est définie, appeler la méthode appropriée du ServiceController, du HabitatController ou du AnimalController
             $method = $routes[$route]['method'];
             $controller = $routes[$route]['controller'];
             if ($method == 'add' || $method == 'update' || $method == 'delete') {

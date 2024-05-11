@@ -42,6 +42,16 @@ function connectDB() {
                         habitat_comment TEXT
                     )");
 
+        // Create the table for the Animal class if it doesn't exist
+        $conn->exec("CREATE TABLE IF NOT EXISTS animals (
+                        id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                        name VARCHAR(255) NOT NULL,
+                        race VARCHAR(255) NOT NULL,
+                        image VARCHAR(255) NOT NULL,
+                        habitat VARCHAR(255) NOT NULL,
+                        animal_status TEXT
+                    )");
+
         return $conn;
     } catch (PDOException $e) {
         // Handle connection errors

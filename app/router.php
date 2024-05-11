@@ -137,6 +137,39 @@ $routes = [
         'method' => 'delete', // Méthode à appeler dans le AnimalController
         'controller' => $animalController // Instance du AnimalController
     ],
+
+    '/vet_reports' => [
+    'file' => 'views/vet_reports_display.php',
+    'title' => 'Les rapports vétérinaires'
+],
+'/vet_report/edit' => [
+    'file' => 'views/vet_report_form_edit.php',
+    'title' => 'Modifier un rapport vétérinaire'
+],
+'/vet_report/delete' => [
+    'file' => 'views/vet_report_delete.php',
+    'title' => 'Supprimer un rapport vétérinaire'
+],
+'/vet_report/add' => [
+    'file' => 'views/vet_report_form_add.php',
+    'title' => 'Ajouter un rapport vétérinaire'
+],
+'/vet_report/add/process' => [
+    'file' => 'controllers/VetReportController.php',
+    'method' => 'add', // Méthode à appeler dans le VetReportController
+    'controller' => $vetReportController // Instance du VetReportController
+],
+'/vet_report/edit/process' => [
+    'file' => 'controllers/VetReportController.php',
+    'method' => 'update', // Méthode à appeler dans le VetReportController
+    'controller' => $vetReportController // Instance du VetReportController
+],
+'/vet_report/delete/process' => [
+    'file' => 'controllers/VetReportController.php',
+    'method' => 'delete', // Méthode à appeler dans le VetReportController
+    'controller' => $vetReportController // Instance du VetReportController
+],
+
 ];
 
 // Function to get the page content

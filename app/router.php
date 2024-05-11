@@ -7,10 +7,13 @@ require_once __DIR__.'/controllers/ServiceController.php';
 require_once __DIR__.'/controllers/HabitatController.php';
 // Include AnimalController
 require_once __DIR__.'/controllers/AnimalController.php';
+// Include VetReportController
+require_once __DIR__.'/controllers/VetReportController.php';
 
 use Controllers\ServiceController;
 use Controllers\HabitatController;
 use Controllers\AnimalController;
+use Controllers\VetReportController;
 
 // Create an instance of ServiceController
 $serviceController = new ServiceController($conn);
@@ -18,6 +21,8 @@ $serviceController = new ServiceController($conn);
 $habitatController = new HabitatController($conn);
 // Create an instance of AnimalController
 $animalController = new AnimalController($conn);
+// Create an instance of VetReportController
+$vetReportController = new VetReportController($conn);
 
 // Define routes
 $routes = [
@@ -139,36 +144,36 @@ $routes = [
     ],
 
     '/vet_reports' => [
-    'file' => 'views/vet_reports_display.php',
-    'title' => 'Les rapports vétérinaires'
-],
-'/vet_report/edit' => [
-    'file' => 'views/vet_report_form_edit.php',
-    'title' => 'Modifier un rapport vétérinaire'
-],
-'/vet_report/delete' => [
-    'file' => 'views/vet_report_delete.php',
-    'title' => 'Supprimer un rapport vétérinaire'
-],
-'/vet_report/add' => [
-    'file' => 'views/vet_report_form_add.php',
-    'title' => 'Ajouter un rapport vétérinaire'
-],
-'/vet_report/add/process' => [
-    'file' => 'controllers/VetReportController.php',
-    'method' => 'add', // Méthode à appeler dans le VetReportController
-    'controller' => $vetReportController // Instance du VetReportController
-],
-'/vet_report/edit/process' => [
-    'file' => 'controllers/VetReportController.php',
-    'method' => 'update', // Méthode à appeler dans le VetReportController
-    'controller' => $vetReportController // Instance du VetReportController
-],
-'/vet_report/delete/process' => [
-    'file' => 'controllers/VetReportController.php',
-    'method' => 'delete', // Méthode à appeler dans le VetReportController
-    'controller' => $vetReportController // Instance du VetReportController
-],
+        'file' => 'views/vet_reports_display.php',
+        'title' => 'Les rapports vétérinaires'
+    ],
+    '/vet_reports/edit' => [
+        'file' => 'views/vet_report_form_edit.php',
+        'title' => 'Modifier un rapport vétérinaire'
+    ],
+    '/vet_reports/delete' => [
+        'file' => 'views/vet_report_delete.php',
+        'title' => 'Supprimer un rapport vétérinaire'
+    ],
+    '/vet_reports/add' => [
+        'file' => 'views/vet_report_form_add.php',
+        'title' => 'Ajouter un rapport vétérinaire'
+    ],
+    '/vet_reports/add/process' => [
+        'file' => 'controllers/VetReportController.php',
+        'method' => 'add', // Méthode à appeler dans le VetReportController
+        'controller' => $vetReportController // Instance du VetReportController
+    ],
+    '/vet_reports/edit/process' => [
+        'file' => 'controllers/VetReportController.php',
+        'method' => 'update', // Méthode à appeler dans le VetReportController
+        'controller' => $vetReportController // Instance du VetReportController
+    ],
+    '/vet_reports/delete/process' => [
+        'file' => 'controllers/VetReportController.php',
+        'method' => 'delete', // Méthode à appeler dans le VetReportController
+        'controller' => $vetReportController // Instance du VetReportController
+    ],
 
 ];
 

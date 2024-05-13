@@ -65,6 +65,14 @@ function connectDB()
                         detail TEXT
                     )");
 
+        // Create the table for the FoodReport class if it doesn't exist
+        $conn->exec("CREATE TABLE IF NOT EXISTS food_reports (
+                        foodreport_ID INT(11) AUTO_INCREMENT PRIMARY KEY,
+                        animal_fed VARCHAR(255) NOT NULL,
+                        food_type VARCHAR(255) NOT NULL,
+                        feeding_time DATETIME NOT NULL
+                    )");
+
         return $conn;
     } catch (PDOException $e) {
         // Handle connection errors

@@ -9,11 +9,16 @@ require_once __DIR__.'/controllers/HabitatController.php';
 require_once __DIR__.'/controllers/AnimalController.php';
 // Include VetReportController
 require_once __DIR__.'/controllers/VetReportController.php';
+// Include FoodReportController
+require_once __DIR__.'/controllers/FoodReportController.php';
+
 
 use Controllers\ServiceController;
 use Controllers\HabitatController;
 use Controllers\AnimalController;
 use Controllers\VetReportController;
+use Controllers\FoodReportController;
+
 
 // Create an instance of ServiceController
 $serviceController = new ServiceController($conn);
@@ -23,6 +28,8 @@ $habitatController = new HabitatController($conn);
 $animalController = new AnimalController($conn);
 // Create an instance of VetReportController
 $vetReportController = new VetReportController($conn);
+// Create an instance of FoodReportController
+$foodReportController = new FoodReportController($conn);
 
 // Define routes
 $routes = [
@@ -174,6 +181,39 @@ $routes = [
         'method' => 'delete', // Méthode à appeler dans le VetReportController
         'controller' => $vetReportController // Instance du VetReportController
     ],
+    '/food_reports' => [
+    'file' => 'views/food_reports_display.php',
+    'title' => 'Les rapports alimentaires'
+    ],
+    '/food_reports/edit' => [
+        'file' => 'views/food_report_form_edit.php',
+        'title' => 'Modifier un rapport alimentaire'
+    ],
+    '/food_reports/delete' => [
+        'file' => 'views/food_report_delete.php',
+        'title' => 'Supprimer un rapport alimentaire'
+    ],
+    '/food_reports/add' => [
+        'file' => 'views/food_report_form_add.php',
+        'title' => 'Ajouter un rapport alimentaire'
+    ],
+    '/food_reports/add/process' => [
+        'file' => 'controllers/FoodReportController.php',
+        'method' => 'add', // Méthode à appeler dans le FoodReportController
+        'controller' => $foodReportController // Instance du FoodReportController
+    ],
+    '/food_reports/edit/process' => [
+        'file' => 'controllers/FoodReportController.php',
+        'method' => 'update', // Méthode à appeler dans le FoodReportController
+        'controller' => $foodReportController // Instance du FoodReportController
+    ],
+    '/food_reports/delete/process' => [
+        'file' => 'controllers/FoodReportController.php',
+        'method' => 'delete', // Méthode à appeler dans le FoodReportController
+        'controller' => $foodReportController // Instance du FoodReportController
+    ],
+
+    
 
 ];
 

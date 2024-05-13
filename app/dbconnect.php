@@ -3,14 +3,6 @@
 // Include the database configuration file
 require_once 'config/dbconfig.php';
 
-// Include the Service class
-require_once 'Models/Service.php';
-
-// Include the Habitat class
-require_once 'Models/Habitat.php';
-
-// Include the VetReport class
-require_once 'Models/VetReport.php';
 
 // Function to connect to the database using PDO
 function connectDB()

@@ -37,6 +37,7 @@ $conn = null;
 
     <h1>Liste des habitats</h1>
 
+    <?php if (!empty($habitats)): ?>
     <?php foreach ($habitats as $habitat): ?>
     <div class="habitat">
         <h2>ID : <?php echo $habitat->getId(); ?></h2> <!-- Afficher l'ID -->
@@ -54,6 +55,9 @@ $conn = null;
             href="/habitats/delete?id=<?php echo $habitat->getId(); ?>">Supprimer</a>
     </div>
     <?php endforeach; ?>
+    <?php else: ?>
+    <p>Aucun habitat n'a été trouvé.</p>
+    <?php endif; ?>
 
     <!-- Bouton "Ajouter un habitat" -->
     <a href="/habitats/add" class="btn btn-primary">Ajouter un habitat</a>

@@ -11,6 +11,9 @@ require_once __DIR__.'/controllers/AnimalController.php';
 require_once __DIR__.'/controllers/VetReportController.php';
 // Include FoodReportController
 require_once __DIR__.'/controllers/FoodReportController.php';
+// Include UserController
+require_once __DIR__.'/controllers/UserController.php';
+
 
 
 use Controllers\ServiceController;
@@ -18,6 +21,7 @@ use Controllers\HabitatController;
 use Controllers\AnimalController;
 use Controllers\VetReportController;
 use Controllers\FoodReportController;
+use Controllers\UserController;
 
 
 // Create an instance of ServiceController
@@ -30,6 +34,8 @@ $animalController = new AnimalController($conn);
 $vetReportController = new VetReportController($conn);
 // Create an instance of FoodReportController
 $foodReportController = new FoodReportController($conn);
+// Create an instance of UserController
+$userController = new UserController($conn);
 
 // Define routes
 $routes = [
@@ -211,6 +217,37 @@ $routes = [
         'file' => 'controllers/FoodReportController.php',
         'method' => 'delete', // Méthode à appeler dans le FoodReportController
         'controller' => $foodReportController // Instance du FoodReportController
+    ],
+    '/users' => [
+        'file' => 'views/users_display.php',
+        'title' => 'Liste des utilisateurs'
+    ],
+    '/users/add' => [
+        'file' => 'views/user_form_add.php',
+        'title' => 'Ajouter un utilisateur'
+    ],
+    '/users/edit' => [
+        'file' => 'views/user_form_edit.php',
+        'title' => 'Modifier un utilisateur'
+    ],
+    '/users/delete' => [
+        'file' => 'views/user_delete.php',
+        'title' => 'Supprimer un utilisateur'
+    ],
+    '/users/add/process' => [
+        'file' => 'controllers/UserController.php',
+        'method' => 'add', // Méthode à appeler dans le UserController
+        'controller' => $userController // Instance du UserController
+    ],
+    '/users/edit/process' => [
+        'file' => 'controllers/UserController.php',
+        'method' => 'update', // Méthode à appeler dans le UserController
+        'controller' => $userController // Instance du UserController
+    ],
+    '/users/delete/process' => [
+        'file' => 'controllers/UserController.php',
+        'method' => 'delete', // Méthode à appeler dans le UserController
+        'controller' => $userController // Instance du UserController
     ],
 
     

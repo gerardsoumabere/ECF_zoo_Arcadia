@@ -13,8 +13,8 @@ require_once __DIR__.'/controllers/VetReportController.php';
 require_once __DIR__.'/controllers/FoodReportController.php';
 // Include UserController
 require_once __DIR__.'/controllers/UserController.php';
-
-
+// Include ReviewController
+require_once __DIR__.'/controllers/ReviewController.php';
 
 use Controllers\ServiceController;
 use Controllers\HabitatController;
@@ -22,7 +22,7 @@ use Controllers\AnimalController;
 use Controllers\VetReportController;
 use Controllers\FoodReportController;
 use Controllers\UserController;
-
+use Controllers\ReviewController;
 
 // Create an instance of ServiceController
 $serviceController = new ServiceController($conn);
@@ -36,38 +36,20 @@ $vetReportController = new VetReportController($conn);
 $foodReportController = new FoodReportController($conn);
 // Create an instance of UserController
 $userController = new UserController($conn);
+// Create an instance of ReviewController
+$reviewController = new ReviewController($conn);
 
 // Define routes
 $routes = [
     '/' => [
         'file' => 'views/home.php',
-        'title' => 'Accueil'
-    ],
-    '/reviews' => [
-        'file' => 'views/reviews.php',
-        'title' => 'Avis'
-    ],
-    '/habitats' => [
-        'file' => 'views/habitats_display.php',
-        'title' => 'Les habitats'
-    ],
+        'title' => 'Bienvenue au Zoo Arcadia'
+    ],    
+    // Routes for ServiceController
     '/services' => [
         'file' => 'views/services_display.php',
         'title' => 'Nos services'
     ],
-    '/contact' => [
-        'file' => 'views/contact_form.php',
-        'title' => 'Contact'
-    ],
-    '/connection' => [
-        'file' => 'views/connection.php',
-        'title' => 'Connexion'
-    ],
-    '/404' => [
-        'file' => 'views/404.php',
-        'title' => 'Erreur 404'
-    ],
-
     '/services/edit' => [
         'file' => 'views/service_form_edit.php',
         'title' => 'Modifier un service'
@@ -85,17 +67,21 @@ $routes = [
         'method' => 'add', // Méthode à appeler dans le ServiceController
         'controller' => $serviceController // Instance du ServiceController
     ],
-
     '/services/edit/process' => [
         'file' => 'controllers/ServiceController.php',
         'method' => 'update', // Méthode à appeler dans le ServiceController
         'controller' => $serviceController // Instance du ServiceController
     ],
-
     '/services/delete/process' => [
         'file' => 'controllers/ServiceController.php',
         'method' => 'delete', // Méthode à appeler dans le ServiceController
         'controller' => $serviceController // Instance du ServiceController
+    ],
+
+    // Routes for HabitatController
+    '/habitats' => [
+        'file' => 'views/habitats_display.php',
+        'title' => 'Les habitats'
     ],
     '/habitats/edit' => [
         'file' => 'views/habitat_form_edit.php',
@@ -124,6 +110,8 @@ $routes = [
         'method' => 'delete', // Méthode à appeler dans le HabitatController
         'controller' => $habitatController // Instance du HabitatController
     ],
+
+    // Routes for AnimalController
     '/animals' => [
         'file' => 'views/animals_display.php',
         'title' => 'Les animaux'
@@ -156,6 +144,7 @@ $routes = [
         'controller' => $animalController // Instance du AnimalController
     ],
 
+    // Routes for VetReportController
     '/vet_reports' => [
         'file' => 'views/vet_reports_display.php',
         'title' => 'Les rapports vétérinaires'
@@ -187,9 +176,11 @@ $routes = [
         'method' => 'delete', // Méthode à appeler dans le VetReportController
         'controller' => $vetReportController // Instance du VetReportController
     ],
+
+    // Routes for FoodReportController
     '/food_reports' => [
-    'file' => 'views/food_reports_display.php',
-    'title' => 'Les rapports alimentaires'
+        'file' => 'views/food_reports_display.php',
+        'title' => 'Les rapports alimentaires'
     ],
     '/food_reports/edit' => [
         'file' => 'views/food_report_form_edit.php',
@@ -218,6 +209,8 @@ $routes = [
         'method' => 'delete', // Méthode à appeler dans le FoodReportController
         'controller' => $foodReportController // Instance du FoodReportController
     ],
+
+    // Routes for UserController
     '/users' => [
         'file' => 'views/users_display.php',
         'title' => 'Liste des utilisateurs'
@@ -250,8 +243,48 @@ $routes = [
         'controller' => $userController // Instance du UserController
     ],
 
-    
+    // Routes for ReviewController
+    '/reviews' => [
+        'file' => 'views/reviews_display.php',
+        'title' => 'Avis'
+    ],    
+    '/reviews/validation' => [
+        'file' => 'views/reviews_validation.php',
+        'title' => 'Avis'   
+    ],
+    '/reviews/edit' => [
+        'file' => 'views/review_form_edit.php',
+        'title' => 'Modifier un avis'
+    ],
+    '/reviews/delete' => [
+        'file' => 'views/review_delete.php',
+        'title' => 'Supprimer un avis'
+    ],
+    '/reviews/add' => [
+        'file' => 'views/review_form_add.php',
+        'title' => 'Ajouter un avis'
+    ],
+    '/reviews/add/process' => [
+        'file' => 'controllers/ReviewController.php',
+        'method' => 'add', // Méthode à appeler dans le ReviewController
+        'controller' => $reviewController // Instance du ReviewController
+    ],
+    '/reviews/edit/process' => [
+        'file' => 'controllers/ReviewController.php',
+        'method' => 'update', // Méthode à appeler dans le ReviewController
+        'controller' => $reviewController // Instance du ReviewController
+    ],
+    '/reviews/delete/process' => [
+        'file' => 'controllers/ReviewController.php',
+        'method' => 'delete', // Méthode à appeler dans le ReviewController
+        'controller' => $reviewController // Instance du ReviewController
+    ],
 
+    // Default 404 route
+    '/404' => [
+        'file' => 'views/404.php',
+        'title' => 'Erreur 404'
+    ],
 ];
 
 // Function to get the page content

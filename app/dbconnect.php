@@ -74,6 +74,14 @@ function connectDB()
         password VARCHAR(255) NOT NULL,
         role VARCHAR(100) NOT NULL
     )");
+    
+        // Create the table for the Review class if it doesn't exist
+        $conn->exec("CREATE TABLE IF NOT EXISTS reviews (
+                    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                    pseudo VARCHAR(255) NOT NULL,
+                    content TEXT NOT NULL,
+                    isPublished BOOLEAN DEFAULT NULL
+                )");
 
 
         return $conn;

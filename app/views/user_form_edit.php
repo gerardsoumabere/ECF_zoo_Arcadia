@@ -15,12 +15,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitUser"])) {
     $id = $_POST["id"];
     $firstName = $_POST["firstName"];
     $lastName = $_POST["lastName"];
+    $email = $_POST["email"];
     $password = $_POST["password"];
+    $role = $_POST["role"];
 
     // Mettre à jour l'utilisateur
-    $userController->update($id, $firstName, $lastName,$email, $password,$role);
+    $userController->update($id, $firstName, $lastName, $email, $password, $role);
 }
-?><div class="container">
+?>
+<div class="container">
     <h2>Modifier l'utilisateur <?php echo $user->user(); ?></h2>
     <div class="row">
         <div class="col-md-6">
@@ -42,6 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitUser"])) {
                         value="<?php echo $user->getLastName(); ?>">
                 </div>
                 <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email"
+                        name="email" value="<?php echo $user->getEmail(); ?>">
+                </div>
+                <div class="mb-3">
                     <label for="password" class="form-label">Mot de
                         passe:</label>
                     <div class="input-group">
@@ -52,6 +60,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitUser"])) {
                         <button type="button" class="btn btn-secondary"
                             id="generatePassword">Générer</button>
                     </div>
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Rôle:</label>
+                    <select name="role" id="role" class="form-select">
+                        <option value="Employé"
+                            <?php if($user->getRole() == 'Employé(e)') echo 'selected'; ?>>
+                            Employé</option>
+                        <option value="Vétérinaire"
+                            <?php if($user->getRole() == 'Vétérinaire') echo 'selected'; ?>>
+                            Vétérinaire</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary"
                     name="submitUser">Modifier</button>

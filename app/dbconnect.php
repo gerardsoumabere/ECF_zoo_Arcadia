@@ -62,7 +62,8 @@ function connectDB()
                         foodreport_ID INT(11) AUTO_INCREMENT PRIMARY KEY,
                         animal_fed VARCHAR(255) NOT NULL,
                         food_type VARCHAR(255) NOT NULL,
-                        feeding_time DATETIME NOT NULL
+                        feeding_time TIME NOT NULL,
+                        feeding_date DATE NOT NULL
                     )");
 
         // Create the table for the User class if it doesn't exist

@@ -279,7 +279,11 @@ $routes = [
         'method' => 'delete', // Méthode à appeler dans le ReviewController
         'controller' => $reviewController // Instance du ReviewController
     ],
-
+    // Routes for Contact
+    '/contact' => [
+        'file' => 'views/contact_form.php',
+        'title' => 'Erreur 404'
+    ],
     // Default 404 route
     '/404' => [
         'file' => 'views/404.php',

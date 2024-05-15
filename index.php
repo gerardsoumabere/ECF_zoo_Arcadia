@@ -48,7 +48,7 @@ require_once 'app/router.php';// Include router file
                             contacter</a>
                     <li class="nav-item">
                         <a class="nav-link text-white"
-                            href="/connection">Connexion</a>
+                            href="/identification">S'identifier</a>
                     </li>
                 </ul>
             </div>

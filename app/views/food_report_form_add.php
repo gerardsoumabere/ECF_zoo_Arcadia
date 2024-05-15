@@ -17,9 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitFoodReport"])) {
     $animalFed = $_POST["animal_fed"];
     $foodType = $_POST["food_type"];
     $feedingTime = $_POST["feeding_time"];
+    $feedingDate = date('Y-m-d H:i:s', strtotime($_POST["feeding_time"])); // Convert feeding time to MySQL datetime format
     
     // Call the method to add a food report
-    $foodReportController->add($animalFed, $foodType, $feedingTime);
+    $foodReportController->add($animalFed, $foodType, $feedingTime, $feedingDate);
 }
 ?>
 

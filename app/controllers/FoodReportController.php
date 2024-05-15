@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 require_once __DIR__ . '/../models/FoodReport.php';
@@ -27,6 +28,7 @@ class FoodReportController {
                     $row['animal_fed'],
                     $row['food_type'],
                     $row['feeding_time'],
+                    $row['feeding_date'], // Add feeding date
                     $this->conn
                 );
                 $foodReports[] = $foodReport;
@@ -61,6 +63,7 @@ class FoodReportController {
                     $row['animal_fed'],
                     $row['food_type'],
                     $row['feeding_time'],
+                    $row['feeding_date'], // Add feeding date
                     $this->conn
                 );
             } else {
@@ -73,10 +76,10 @@ class FoodReportController {
     }
 
     // Add a food report
-    public function add($animalFed, $foodType, $feedingTime) {
+    public function add($animalFed, $foodType, $feedingTime, $feedingDate) {
         try {
             // Create a new food report
-            $foodReport = new FoodReport(null, $animalFed, $foodType, $feedingTime, $this->conn);
+            $foodReport = new FoodReport(null, $animalFed, $foodType, $feedingTime, $feedingDate, $this->conn);
             // Add the new food report to the database
             $foodReport->save();
 
@@ -90,13 +93,14 @@ class FoodReportController {
     }
 
     // Update a food report
-    public function update($id, $animalFed, $foodType, $feedingTime) {
+    public function update($id, $animalFed, $foodType, $feedingTime, $feedingDate) {
         try {
             // Get the food report to update
             $foodReport = $this->getById($id);
             $foodReport->setAnimalFed($animalFed);
             $foodReport->setFoodType($foodType);
             $foodReport->setFeedingTime($feedingTime);
+            $foodReport->setFeedingDate($feedingDate);
 
             // Update the food report in the database
             $foodReport->update();

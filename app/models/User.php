@@ -8,7 +8,7 @@ class User {
     private $lastName;
     private $email;
     private $password;
-    private $role; // Nouvel attribut pour le rôle de l'utilisateur
+    private $role;
     private $conn;
 
     public function __construct($firstName, $lastName, $email, $password, $role, $conn) {
@@ -16,7 +16,7 @@ class User {
         $this->lastName = $lastName;
         $this->email = $email;
         $this->password = $password;
-        $this->role = $role; // Affectation du rôle
+        $this->role = $role; 
         $this->conn = $conn;
     }
 

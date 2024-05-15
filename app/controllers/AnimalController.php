@@ -28,7 +28,7 @@ class AnimalController {
                     $row['name'],
                     $row['race'],
                     $row['image'],
-                    $row['habitat'],
+                    $row['habitat_id'], // Utiliser habitat_id à la place de habitat
                     $row['animal_status'],
                     $this->conn
                 );
@@ -58,7 +58,7 @@ class AnimalController {
                 $row['name'],
                 $row['race'],
                 $row['image'],
-                $row['habitat'],
+                $row['habitat_id'], // Utiliser habitat_id à la place de habitat
                 $row['animal_status'],
                 $this->conn
             );
@@ -129,4 +129,18 @@ class AnimalController {
             echo "Error: " . $e->getMessage();
         }
     }
+    // Get habitat name by habitat id
+public function getHabitatName($habitatId) {
+    try {
+        $sql = "SELECT name FROM habitats WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $habitatId);
+        $stmt->execute();
+        $row = $stmt->fetch();
+        return $row['name'];
+    } catch (\PDOException $e) {
+        // Handle database errors
+        echo "Error: " . $e->getMessage();
+    }
+}
 }

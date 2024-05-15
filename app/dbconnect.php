@@ -9,7 +9,7 @@ function connectDB()
 {
     try {
         // Set Data Source Name
-        $dsn = "mysql:host=" . DB_HOST . ";";
+        $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
         // Create a new PDO instance
         $conn = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
         // Set the PDO error mode to exception
@@ -34,7 +34,6 @@ function connectDB()
                         name VARCHAR(255) NOT NULL,
                         images VARCHAR(255) NOT NULL,
                         description TEXT,
-                        animal_list TEXT,
                         habitat_comment TEXT
                     )");
 
@@ -44,8 +43,9 @@ function connectDB()
                         name VARCHAR(255) NOT NULL,
                         race VARCHAR(255) NOT NULL,
                         image VARCHAR(255) NOT NULL,
-                        habitat VARCHAR(255) NOT NULL,
-                        animal_status TEXT
+                        habitat_id INT(11) NOT NULL,
+                        animal_status TEXT,
+                        FOREIGN KEY (habitat_id) REFERENCES habitats(id)
                     )");
 
         // Create the table for the VetReport class if it doesn't exist
@@ -68,22 +68,21 @@ function connectDB()
 
         // Create the table for the User class if it doesn't exist
         $conn->exec("CREATE TABLE IF NOT EXISTS users (
-        id INT(11) AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(100) NOT NULL UNIQUE,
-        first_name VARCHAR(50) NOT NULL,
-        last_name VARCHAR(255) NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        role VARCHAR(100) NOT NULL
-    )");
-    
+                        id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                        email VARCHAR(100) NOT NULL UNIQUE,
+                        first_name VARCHAR(50) NOT NULL,
+                        last_name VARCHAR(255) NOT NULL,
+                        password VARCHAR(255) NOT NULL,
+                        role VARCHAR(100) NOT NULL
+                    )");
+
         // Create the table for the Review class if it doesn't exist
         $conn->exec("CREATE TABLE IF NOT EXISTS reviews (
-                    id INT(11) AUTO_INCREMENT PRIMARY KEY,
-                    pseudo VARCHAR(255) NOT NULL,
-                    content TEXT NOT NULL,
-                    isPublished BOOLEAN DEFAULT NULL
-                )");
-
+                        id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                        pseudo VARCHAR(255) NOT NULL,
+                        content TEXT NOT NULL,
+                        isPublished BOOLEAN DEFAULT NULL
+                    )");
 
         return $conn;
     } catch (PDOException $e) {

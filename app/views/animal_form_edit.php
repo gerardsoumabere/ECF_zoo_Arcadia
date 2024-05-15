@@ -15,32 +15,39 @@ if(isset($_GET['id'])) {
     $animal = $animalController->getById($_GET['id']);
 }
 
-// Si le formulaire est soumis, mettre à jour l'animal
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitAnimal"])) {
-    $id = $_POST["id"];
-    $name = $_POST["name"];
-    $race = $_POST["race"];
+// Vérifier si l'animal est défini
+if($animal) {
+    // Si le formulaire est soumis, mettre à jour l'animal
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitAnimal"])) {
+        $id = $_POST["id"];
+        $name = $_POST["name"];
+        $race = $_POST["race"];
 
-    // Vérifier si une nouvelle image a été téléchargée
-    if(isset($_FILES["images"]) && $_FILES["images"]["error"] == 0) {
-        $extension = pathinfo($_FILES["images"]["name"], PATHINFO_EXTENSION);
-        $date = date("YmdHis");
-        $random = uniqid();
-        $newfilename = $date . "-" . $random . "." . $extension;
-        $target_file = $_SERVER['DOCUMENT_ROOT'] . "/public/assets/gallery/" . $newfilename;
-        $newfileurl = "/assets/gallery/" . $newfilename;
-        move_uploaded_file($_FILES["images"]["tmp_name"], $target_file);
-        $images = "/public" . $newfileurl;
-    } else {
-        // Si aucune nouvelle image n'a été téléchargée, utiliser l'image existante
-        $images = $_POST["oldImages"];
+        // Vérifier si une nouvelle image a été téléchargée
+        if(isset($_FILES["images"]) && $_FILES["images"]["error"] == 0) {
+            $extension = pathinfo($_FILES["images"]["name"], PATHINFO_EXTENSION);
+            $date = date("YmdHis");
+            $random = uniqid();
+            $newfilename = $date . "-" . $random . "." . $extension;
+            $target_file = $_SERVER['DOCUMENT_ROOT'] . "/public/assets/gallery/" . $newfilename;
+            $newfileurl = "/assets/gallery/" . $newfilename;
+            move_uploaded_file($_FILES["images"]["tmp_name"], $target_file);
+            $images = "/public" . $newfileurl;
+        } else {
+            // Si aucune nouvelle image a été téléchargée, utiliser l'image existante
+            $images = $_POST["oldImages"];
+        }
+
+        $habitat = $_POST["habitat"];
+        $animalDetail = $_POST["animal_detail"];
+
+        // Mettre à jour l'animal
+        $animalController->update($id, $name, $race, $images, $habitat, $animalDetail);
     }
-
-    $habitat = $_POST["habitat"];
-    $animalDetail = $_POST["animal_detail"];
-
-    // Mettre à jour l'animal
-    $animalController->update($id, $name, $race, $images, $habitat, $animalDetail);
+} else {
+    // Rediriger avec un message d'erreur si aucun animal n'est trouvé
+    header("Location: /animals");
+    exit();
 }
 ?>
 
@@ -82,14 +89,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitAnimal"])) {
                 <div class="mb-3">
                     <label for="habitat" class="form-label">Habitat:</label>
                     <select class="form-select" id="habitat" name="habitat">
-                        <option value="Savane"
-                            <?php echo $animal->getHabitat() == 'Savane' ? 'selected' : ''; ?>>
+                        <option value="1"
+                            <?php echo $animal->getHabitat() == 1 ? 'selected' : ''; ?>>
                             Savane</option>
-                        <option value="Jungle"
-                            <?php echo $animal->getHabitat() == 'Jungle' ? 'selected' : ''; ?>>
+                        <option value="2"
+                            <?php echo $animal->getHabitat() == 2 ? 'selected' : ''; ?>>
                             Jungle</option>
-                        <option value="Marais"
-                            <?php echo $animal->getHabitat() == 'Marais' ? 'selected' : ''; ?>>
+                        <option value="3"
+                            <?php echo $animal->getHabitat() == 3 ? 'selected' : ''; ?>>
                             Marais</option>
                     </select>
                 </div>

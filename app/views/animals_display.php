@@ -17,10 +17,11 @@ $animals = $animalController->index();
 if (empty($animals)) {
     // Initialiser les données des animaux
     // SQL statement to insert animals
-    $sql = "INSERT INTO animals (name, race, image, habitat, animal_status) VALUES 
-            ('Lion', 'Lion africain', 'https://via.placeholder.com/400', 'Savane', 'En bonne santé'),
-            ('Tigre', 'Tigre du Bengale', 'https://via.placeholder.com/400', 'Jungle', 'En bonne santé'),
-            ('Crocodile', 'Crocodile du Nil', 'https://via.placeholder.com/400', 'Marais', 'En bonne santé')";
+   $sql = "INSERT INTO animals (name, race, image, habitat_id, animal_status) VALUES 
+            ('Lion', 'Lion africain', 'https://via.placeholder.com/400', 1, 'En bonne santé'),
+            ('Tigre', 'Tigre du Bengale', 'https://via.placeholder.com/400', 2, 'En bonne santé'),
+            ('Crocodile', 'Crocodile du Nil', 'https://via.placeholder.com/400', 3, 'En bonne santé')";
+
 
     // Execute the SQL statement
     $conn->exec($sql);
@@ -42,7 +43,9 @@ if (empty($animals)) {
         <img src="<?php echo $animal->getImage(); ?>"
             alt="<?php echo $animal->getName(); ?>">
         <p>Race : <?php echo $animal->getRace(); ?></p>
-        <p>Habitat : <?php echo $animal->getHabitat(); ?></p>
+        <p>Habitat :
+            <?php echo $animalController->getHabitatName($animal->getHabitat()); ?>
+        </p>
         <p>État : <?php echo $animal->getAnimalStatus(); ?></p>
         <!-- Ajouter les liens pour la mise à jour et la suppression -->
         <a href="/animals/edit?id=<?php echo $animal->getId(); ?>">Modifier</a>

@@ -2,6 +2,10 @@
 
 namespace Models;
 
+require_once __DIR__ . '/../controllers/AnimalController.php';
+
+use Controllers\AnimalController;
+
 class Habitat {
     private $id;
     private $name;
@@ -11,7 +15,6 @@ class Habitat {
     private $habitatComment;
     private $conn;
 
-    // Constructor
     public function __construct($id, $name, $images, $description, $animalList, $habitatComment, $conn) {
         $this->id = $id;
         $this->name = $name;
@@ -22,7 +25,8 @@ class Habitat {
         $this->conn = $conn;
     }
 
-    // Getters
+    // Getters and Setters
+
     public function getId() {
         return $this->id;
     }
@@ -47,7 +51,6 @@ class Habitat {
         return $this->habitatComment;
     }
 
-    // Setters
     public function setName($name) {
         $this->name = $name;
     }
@@ -68,7 +71,8 @@ class Habitat {
         $this->habitatComment = $habitatComment;
     }
 
-    // Method to save a habitat to the database
+    // Database operations
+
     public function save() {
         try {
             $sql = "INSERT INTO habitats (name, images, description, animal_list, habitat_comment) 
@@ -81,12 +85,10 @@ class Habitat {
             $stmt->bindParam(':habitat_comment', $this->habitatComment);
             $stmt->execute();
         } catch (\PDOException $e) {
-            // Handle database errors
             echo "Error: " . $e->getMessage();
         }
     }
 
-    // Method to update a habitat in the database
     public function update() {
         try {
             $sql = "UPDATE habitats SET name = :name, images = :images, description = :description, 
@@ -100,12 +102,10 @@ class Habitat {
             $stmt->bindParam(':id', $this->id);
             $stmt->execute();
         } catch (\PDOException $e) {
-            // Handle database errors
             echo "Error: " . $e->getMessage();
         }
     }
 
-    // Method to delete a habitat from the database
     public function delete() {
         try {
             $sql = "DELETE FROM habitats WHERE id = :id";
@@ -113,7 +113,21 @@ class Habitat {
             $stmt->bindParam(':id', $this->id);
             $stmt->execute();
         } catch (\PDOException $e) {
-            // Handle database errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    // Custom methods
+
+    public function getImage() {
+        return $this->images;
+    }
+
+    public function getAnimalsByHabitat() {
+        try {
+            $animalController = new AnimalController($this->conn);
+            return $animalController->getAnimalsByHabitat($this->id);
+        } catch (\PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
     }

@@ -5,6 +5,7 @@ namespace Controllers;
 require_once __DIR__ . '/../models/Habitat.php';
 
 use Models\Habitat;
+use Models\Animal;
 
 class HabitatController {
     private $conn;
@@ -107,25 +108,72 @@ class HabitatController {
             echo "Error: " . $e->getMessage();
         }
     }
-// Supprimer un habitat
-public function delete($id) {
-    try {
-        // Récupérer l'ID de l'habitat à supprimer depuis le tableau
-        $id = $id['id'];
-        
-        // Récupérer l'habitat par son ID
-        $habitat = $this->getById($id);
 
-        // Supprimer l'habitat
-        $habitat->delete();
+    // Delete a habitat
+    public function delete($id) {
+        try {
+            // Get the ID of the habitat to delete from the array
+            $id = $id['id'];
+            
+            // Get the habitat by its ID
+            $habitat = $this->getById($id);
 
-        // Rediriger vers la route /habitats
-        header("Location: /habitats");
-        exit();
+            // Delete the habitat
+            $habitat->delete();
 
-    } catch (\PDOException $e) {
-        // Gérer les erreurs de base de données
-        echo "Erreur : " . $e->getMessage();
+            // Redirect to the /habitats route
+            header("Location: /habitats");
+            exit();
+
+        } catch (\PDOException $e) {
+            // Handle database errors
+            echo "Error: " . $e->getMessage();
+        }
     }
-}
+
+    // Get habitat name by habitat id
+    public function getHabitatName($habitatId) {
+        try {
+            $sql = "SELECT name FROM habitats WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $habitatId);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            return $row['name'];
+        } catch (\PDOException $e) {
+            // Handle database errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    // Get animals by habitat id
+    public function getAnimalsByHabitat($habitatId) {
+        try {
+            $animals = array();
+            // SQL query to get animals by habitat id
+            $sql = "SELECT * FROM animals WHERE habitat_id = :habitat_id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':habitat_id', $habitatId);
+            $stmt->execute();
+
+            // Get the results of the query
+            while ($row = $stmt->fetch()) {
+                $animal = new Animal(
+                    $row['id'],
+                    $row['name'],
+                    $row['race'],
+                    $row['image'],
+                    $row['habitat_id'],
+                    $row['animal_status'],
+                    $this->conn
+                );
+                $animals[] = $animal;
+            }
+
+            return $animals; // Return the animals
+        } catch (\PDOException $e) {
+            // Handle database errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
 }

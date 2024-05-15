@@ -143,4 +143,56 @@ public function getHabitatName($habitatId) {
         echo "Error: " . $e->getMessage();
     }
 }
+
+// Get all habitats
+    public function getHabitats() {
+        try {
+            $habitats = array();
+            // SQL query to get all habitats from the database
+            $sql = "SELECT * FROM habitats";
+            $stmt = $this->conn->query($sql);
+
+            // Get the results of the query
+            while ($row = $stmt->fetch()) {
+                $habitats[] = $row;
+            }
+
+            return $habitats; // Return the habitats
+        } catch (\PDOException $e) {
+            // Handle database errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    // Get animals by habitat
+    public function getAnimalsByHabitat($habitatId) {
+        try {
+            $animals = array();
+            // SQL query to get animals by habitat from the database
+            $sql = "SELECT * FROM animals WHERE habitat_id = :habitat_id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':habitat_id', $habitatId);
+            $stmt->execute();
+
+            // Get the results of the query
+            while ($row = $stmt->fetch()) {
+                $animal = new Animal(
+                    $row['id'],
+                    $row['name'],
+                    $row['race'],
+                    $row['image'],
+                    $row['habitat_id'],
+                    $row['animal_status'],
+                    $this->conn
+                );
+                $animals[] = $animal;
+            }
+
+            return $animals; // Return the animals
+        } catch (\PDOException $e) {
+            // Handle database errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
 }

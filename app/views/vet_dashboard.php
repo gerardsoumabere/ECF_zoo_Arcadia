@@ -1,0 +1,1 @@
+<h1>Vet dashboard</h1>

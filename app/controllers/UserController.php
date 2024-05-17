@@ -1,6 +1,8 @@
 <?php
+
 namespace Controllers;
 
+require_once __DIR__ . '/../config/adminconfig.php';
 require_once __DIR__ . '/../models/User.php';
 
 use Models\User;
@@ -61,9 +63,9 @@ class UserController {
                 $user = new User(
                     $row['first_name'],
                     $row['last_name'],
-                    $row['email'], // Utilisation de l'email au lieu du username
+                    $row['email'], 
                     $row['password'],
-                    $row['role'], // Ajout du rôle
+                    $row['role'],
                     $this->conn
                 );
                 $user->setId($row['id']);
@@ -136,6 +138,111 @@ class UserController {
         } catch (\PDOException $e) {
             // Gérer les erreurs de base de données
             echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    // Login user
+public function login($conn,$requestData) {
+    
+    try {
+        // Load admin credentials from config file
+               
+        $config = require_once __DIR__ . '/../config/adminconfig.php';
+        $admin_email = ADMIN_EMAIL;
+        $admin_password = ADMIN_PASSWORD;
+
+        $email = $requestData['email'];
+        $password = $requestData['password'];
+        // Check if user is an admin TODo check password
+        if ($email === $admin_email && $password === $admin_password) {
+            // Start session and store user data
+                echo "Admin connecté ";
+            session_start();
+            $_SESSION['user'] = 'Administrateur';
+
+            // Redirect to admin dashboard
+            header("Location: /admin");
+            exit();
+        }
+
+        // SQL query to get user by email
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $row = $stmt->fetch();
+
+        // If user found, verify password TODO:remetre passwordverify
+        if ($row && $password=== $row['password']) {
+            // Start session and store user data
+            session_start();
+            $_SESSION['user'] = [
+                'id' => $row['id'],
+                'email' => $row['email'],
+                'role' => $row['role']
+            ];
+
+            // Redirect to appropriate dashboard based on role
+            if ($row['role'] == 'Employé') {
+                header("Location: /employee");
+            } elseif ($row['role'] == 'Vétérinaire') {
+                header("Location: /vet_dashboard");
+            } else {
+                header("Location: /");
+            }
+            exit();
+        } else {
+            // If authentication fails, redirect back to login page with error message
+            header("Location: /login?error=auth_failed");
+            exit();
+        }
+    } catch (\PDOException $e) {
+        // Handle database errors
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+
+    // Logout user
+    public function logout() {
+        // Unset all session values
+        session_start();
+        session_unset();
+        session_destroy();
+
+        // Redirect to login page after logout
+        header("Location: /login");
+        exit();
+    }
+
+    // Get a user by its email
+    public function getByEmail($email) {
+        try {
+            // SQL query to get a user by its email
+            $sql = "SELECT * FROM users WHERE email = :email";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+            $row = $stmt->fetch();
+
+            // If a user is found, return a User object
+            if ($row) {
+                $user = new User(
+                    $row['first_name'],
+                    $row['last_name'],
+                    $row['email'], 
+                    $row['password'],
+                    $row['role'],
+                    $this->conn
+                );
+                $user->setId($row['id']);
+                return $user;
+            } else {
+                return null; // Return null if no user found with the given email
+            }
+        } catch (\PDOException $e) {
+            // Handle database errors
+            echo "Error: " . $e->getMessage();
         }
     }
 }

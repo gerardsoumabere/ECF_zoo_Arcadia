@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__.'/dbconnect.php'; 
 
 // Include ServiceController
@@ -15,6 +16,8 @@ require_once __DIR__.'/controllers/FoodReportController.php';
 require_once __DIR__.'/controllers/UserController.php';
 // Include ReviewController
 require_once __DIR__.'/controllers/ReviewController.php';
+
+
 
 use Controllers\ServiceController;
 use Controllers\HabitatController;
@@ -38,6 +41,7 @@ $foodReportController = new FoodReportController($conn);
 $userController = new UserController($conn);
 // Create an instance of ReviewController
 $reviewController = new ReviewController($conn);
+
 
 // Define routes
 $routes = [
@@ -285,10 +289,34 @@ $routes = [
         'title' => 'Nous contacter'
     ],
 
-    // Route for Contact
-    '/identification' => [
-        'file' => 'views/identification.php',
-        'title' => 'S\'identifier',
+    // Route for Login
+    '/login' => [
+        'file' => 'views/login.php',
+        'title' => 'S\'identifier'
+    ],
+    '/login/process' => [
+        'file' => 'controllers/UserController.php',
+        'method' => 'login', // Méthode à appeler dans le LoginController
+        'controller' => $userController // Instance du LoginController
+    ],
+    '/logout' => [
+        'file' => 'controllers/UserController.php',
+        'method' => 'logout', // Méthode à appeler dans le LoginController
+        'controller' => $userController // Instance du LoginController
+    ],
+    
+    //Routes for roles
+    '/admin' => [
+        'file' => 'views/admin_dashboard.php',
+        'title' => 'Administrateur'
+    ],
+    '/employee' => [
+        'file' => 'views/employee_dashboard.php',
+        'title' => 'Employé',
+    ],
+    '/vet_dashboard' => [
+        'file' => 'views/vet_dashboard.php',
+        'title' => 'Vétérinaire', 
     ],
     // Default 404 route
     '/404' => [
@@ -297,20 +325,27 @@ $routes = [
     ],
 ];
 
+
+
+
+
 // Function to get the page content
 function getPageContent($route)
 {
     global $routes, $conn; // Ajout de $conn ici
+
     if (array_key_exists($route, $routes)) {
         if (isset($routes[$route]['method'])) {
-            // Si une méthode est définie, appeler la méthode appropriée du ServiceController, du HabitatController ou du AnimalController
+            echo ('méthode définie');
+            // Si une méthode est définie, appeler la méthode appropriée du Controller
             $method = $routes[$route]['method'];
             $controller = $routes[$route]['controller'];
-            if ($method == 'add' || $method == 'update' || $method == 'delete') {
+            if ($method == 'add' || $method == 'update' || $method == 'delete' || $method == 'login') {
                 // Récupérer les données du formulaire
                 $requestData = $_POST;
+                var_dump($requestData);
                 // Appeler la méthode avec les données du formulaire
-                return $controller->$method($requestData);
+                return $controller->$method($conn, $requestData);
             } else {
                 return $controller->$method();
             }
@@ -332,7 +367,6 @@ function getPageContent($route)
 
 // Get the current route
 $route = strtok($_SERVER['REQUEST_URI'], '?'); // Utilisation de strtok pour supprimer les paramètres GET
-
 // Get page content based on route
 $page = getPageContent($route);
 

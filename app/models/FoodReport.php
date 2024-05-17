@@ -84,7 +84,7 @@ class FoodReport {
             $stmt->bindParam(':animal_fed', $this->animal_fed);
             $stmt->bindParam(':food_type', $this->food_type);
             $stmt->bindParam(':feeding_time', $this->feeding_time);
-            $stmt->bindParam(':feeding_date', $this->feeding_date); // Bind the new property
+            $stmt->bindParam(':feeding_date', $this->feeding_date);
             $stmt->bindParam(':foodreport_ID', $this->foodreport_ID);
             $stmt->execute();
         } catch (\PDOException $e) {

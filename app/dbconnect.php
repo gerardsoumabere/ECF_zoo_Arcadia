@@ -55,6 +55,7 @@ function connectDB()
                         passing_date DATE NOT NULL,
                         creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         detail TEXT
+                        FOREIGN KEY (animal_id) REFERENCES animals(id)
                     )");
 
         // Create the table for the FoodReport class if it doesn't exist
@@ -64,6 +65,7 @@ function connectDB()
                         food_type VARCHAR(255) NOT NULL,
                         feeding_time TIME NOT NULL,
                         feeding_date DATE NOT NULL
+                        FOREIGN KEY (animal_id) REFERENCES animals(id)
                     )");
 
         // Create the table for the User class if it doesn't exist

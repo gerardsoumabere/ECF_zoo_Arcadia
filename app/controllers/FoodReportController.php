@@ -134,4 +134,28 @@ class FoodReportController {
             echo "Error: " . $e->getMessage();
         }
     }
+
+    // Get all animals
+    public function getAllAnimals() {
+        try {
+            $animals = array();
+            // SQL query to get all animals from the database
+            $sql = "SELECT id, name FROM animals";
+            $stmt = $this->conn->query($sql);
+
+            // Get the results of the query
+            while ($row = $stmt->fetch()) {
+                $animals[] = array(
+                    'id' => $row['id'],
+                    'name' => $row['name']
+                );
+            }
+
+            return $animals; // Return the list of animals
+        } catch (\PDOException $e) {
+            // Handle database errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
 }

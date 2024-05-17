@@ -6,6 +6,8 @@ use Controllers\FoodReportController;
 $foodReportController = new FoodReportController($conn);
 
 $foodReport = null;
+$animals = $foodReportController->getAllAnimals(); // Get all animals
+
 // If an ID is provided in the URL, get the details of the food report
 if(isset($_GET['id'])) {
     $foodReport = $foodReportController->getById($_GET['id']);
@@ -37,9 +39,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitFoodReport"])) {
                 <div class="mb-3">
                     <label for="animal_fed" class="form-label">Animal nourri
                         :</label>
-                    <input type="text" class="form-control" id="animal_fed"
-                        name="animal_fed"
-                        value="<?php echo $foodReport->getAnimalFed(); ?>">
+                    <select class="form-control" id="animal_fed"
+                        name="animal_fed">
+                        <?php foreach ($animals as $animal): ?>
+                        <option value="<?php echo $animal['id']; ?>"
+                            <?php if ($animal['id'] == $foodReport->getAnimalFed()) echo "selected"; ?>>
+                            <?php echo $animal['name']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="food_type" class="form-label">Type de nourriture

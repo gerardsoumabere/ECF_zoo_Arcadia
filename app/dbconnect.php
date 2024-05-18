@@ -54,7 +54,7 @@ function connectDB()
                         animal_id INT(11) NOT NULL,
                         passing_date DATE NOT NULL,
                         creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        detail TEXT
+                        detail TEXT,
                         FOREIGN KEY (animal_id) REFERENCES animals(id)
                     )");
 
@@ -64,7 +64,7 @@ function connectDB()
                         animal_fed VARCHAR(255) NOT NULL,
                         food_type VARCHAR(255) NOT NULL,
                         feeding_time TIME NOT NULL,
-                        feeding_date DATE NOT NULL
+                        feeding_date DATE NOT NULL,
                         FOREIGN KEY (animal_id) REFERENCES animals(id)
                     )");
 

@@ -88,7 +88,9 @@ require_once 'app/router.php';// Include router file
         src="
             https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js">
     </script>
-
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
 
     <script src="https://kit.fontawesome.com/b9e4f7e18e.js"
         crossorigin="anonymous"></script>

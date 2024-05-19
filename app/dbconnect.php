@@ -7,14 +7,21 @@ require_once 'config/dbconfig.php';
 function connectDB()
 {
     try {
+        // Connect to MySQL without specifying a database
+        $dsn = "mysql:host=" . DB_HOST;
+        $conn = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Create the database if it does not exist
+        $dbName = "`" . str_replace("`", "``", DB_NAME) . "`";
+        $conn->exec("CREATE DATABASE IF NOT EXISTS $dbName");
+
+        // Connect to the newly created database
         $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
         $conn = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $dbName = "`" . str_replace("`", "``", DB_NAME) . "`";
-        $conn->exec("CREATE DATABASE IF NOT EXISTS $dbName");
-        $conn->exec("USE $dbName");
-
+        // Create tables if they do not exist
         $conn->exec("CREATE TABLE IF NOT EXISTS services (
                         id INT(11) AUTO_INCREMENT PRIMARY KEY,
                         title VARCHAR(255) NOT NULL,

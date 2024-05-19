@@ -3,6 +3,7 @@
 namespace Controllers;
 
 require_once __DIR__ . '/../models/Habitat.php';
+require_once __DIR__ . '/../models/Animal.php';
 
 use Models\Habitat;
 use Models\Animal;
@@ -29,7 +30,6 @@ class HabitatController {
                     $row['name'],
                     $row['images'],
                     $row['description'],
-                    $row['animal_list'],
                     $row['habitat_comment'],
                     $this->conn
                 );
@@ -59,7 +59,6 @@ class HabitatController {
                 $row['name'],
                 $row['images'],
                 $row['description'],
-                $row['animal_list'],
                 $row['habitat_comment'],
                 $this->conn
             );
@@ -70,10 +69,10 @@ class HabitatController {
     }
 
     // Add a habitat
-    public function add($name, $images, $description, $animalList, $habitatComment) {
+    public function add($name, $images, $description, $habitatComment) {
         try {
             // Create a new habitat
-            $habitat = new Habitat(null, $name, $images, $description, $animalList, $habitatComment, $this->conn);
+            $habitat = new Habitat(null, $name, $images, $description, $habitatComment, $this->conn);
             // Add the new habitat to the database
             $habitat->save();
 
@@ -87,14 +86,13 @@ class HabitatController {
     }
 
     // Update a habitat
-    public function update($id, $name, $images, $description, $animalList, $habitatComment) {
+    public function update($id, $name, $images, $description, $habitatComment) {
         try {
             // Get the habitat to update
             $habitat = $this->getById($id);
             $habitat->setName($name);
             $habitat->setImages($images);
             $habitat->setDescription($description);
-            $habitat->setAnimalList($animalList);
             $habitat->setHabitatComment($habitatComment);
 
             // Update the habitat in the database
@@ -112,9 +110,6 @@ class HabitatController {
     // Delete a habitat
     public function delete($id) {
         try {
-            // Get the ID of the habitat to delete from the array
-            $id = $id['id'];
-            
             // Get the habitat by its ID
             $habitat = $this->getById($id);
 

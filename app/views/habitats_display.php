@@ -38,6 +38,7 @@
     <h1>Liste des habitats</h1>
     <div class="row">
         <?php foreach ($habitats as $habitat): ?>
+        <?php $animals = $habitat->getAnimalsByHabitat(); ?>
         <div class="col-md-4">
             <div class="card">
                 <img class="card-img-top habitat-img"
@@ -48,17 +49,16 @@
                 <div class="card-body">
                     <h5 class="card-title habitat-title" data-toggle="collapse"
                         data-target="#habitat<?php echo $habitat->getId(); ?>">
-                        <?php echo $habitat->getName(); ?></h5>
+                        <?php echo $habitat->getName(); ?>
+                    </h5>
                     <div id="habitat<?php echo $habitat->getId(); ?>"
                         class="collapse">
                         <p class="card-text">
-                            <?php echo $habitat->getDescription(); ?></p>
+                            <?php echo $habitat->getDescription(); ?>
+                        </p>
                         <p class="card-text">Animaux dans cet habitat :</p>
                         <ul class="list-group list-group-flush">
-                            <?php
-                                $animals = $habitatController->getAnimalsByHabitat($habitat->getId());
-                                foreach ($animals as $animal):
-                            ?>
+                            <?php foreach ($animals as $animal): ?>
                             <li class="list-group-item">
                                 <img src="<?php echo $animal->getImage(); ?>"
                                     alt="<?php echo $animal->getName(); ?>"
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
             habitatDetails.classList.remove('show');
         } else {
             const openDetails = document.querySelector(
-                '.collapse.show');
+            '.collapse.show');
             if (openDetails) {
                 openDetails.classList.remove('show');
             }
@@ -121,14 +121,14 @@ document.addEventListener("DOMContentLoaded", function() {
         const animalName = event.target.dataset.animalName;
         const animalImage = event.target.dataset.animalImage;
         const animalDescription = event.target.dataset
-            .animalDescription;
+        .animalDescription;
 
         const modalTitle = document.querySelector(
             '#animalModal .modal-title');
         modalTitle.textContent = animalName + ' Information';
 
         const modalBody = document.querySelector(
-            '#animalInfoModalBody');
+        '#animalInfoModalBody');
         modalBody.innerHTML = `
                 <img src="${animalImage}" alt="${animalName}" class="img-fluid">
                 <p>${animalDescription}</p>

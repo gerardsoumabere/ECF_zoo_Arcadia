@@ -45,7 +45,7 @@ function connectDB()
                         habitat_id INT(11) NOT NULL,
                         animal_status TEXT,
                         FOREIGN KEY (habitat_id) REFERENCES habitats(id)
-                    )");
+                    );");
 
         $conn->exec("CREATE TABLE IF NOT EXISTS vet_reports (
                         id INT(11) AUTO_INCREMENT PRIMARY KEY,

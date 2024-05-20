@@ -110,10 +110,12 @@ $routes = [
         'controller' => $habitatController // Instance du HabitatController
     ],
     '/habitats/delete/process' => [
-        'file' => 'controllers/HabitatController.php',
-        'method' => 'delete', // Méthode à appeler dans le HabitatController
-        'controller' => $habitatController // Instance du HabitatController
+    'file' => 'controllers/HabitatController.php',
+    'method' => 'delete', // Méthode à appeler dans le HabitatController
+    'controller' => $habitatController, // Instance du HabitatController
+    'requestData' => $_POST // Passer les données du formulaire
     ],
+
 
     // Routes for AnimalController
     '/animals' => [
@@ -296,8 +298,9 @@ $routes = [
     ],
     '/login/process' => [
         'file' => 'controllers/UserController.php',
-        'method' => 'login', // Méthode à appeler dans le LoginController
-        'controller' => $userController // Instance du LoginController
+        'method' => 'login', 
+        'controller' => $userController, 
+        'requestData' => $_POST
     ],
     '/logout' => [
         'file' => 'controllers/UserController.php',
@@ -327,8 +330,6 @@ $routes = [
 
 
 
-
-
 // Function to get the page content
 function getPageContent($route)
 {
@@ -341,11 +342,16 @@ function getPageContent($route)
             $method = $routes[$route]['method'];
             $controller = $routes[$route]['controller'];
             if ($method == 'add' || $method == 'update' || $method == 'delete' || $method == 'login') {
-                // Récupérer les données du formulaire
-                $requestData = $_POST;
-                var_dump($requestData);
-                // Appeler la méthode avec les données du formulaire
-                return $controller->$method($conn, $requestData);
+                // Vérifier si des données POST ont été envoyées
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    // Récupérer les données du formulaire
+                    $requestData = $_POST;
+                    // Appeler la méthode avec les données du formulaire
+                    return $controller->$method($requestData);
+                } else {
+                    // Gérer l'absence de données POST
+                    return "Aucune donnée POST n'a été envoyée.";
+                }
             } else {
                 return $controller->$method();
             }
@@ -364,6 +370,7 @@ function getPageContent($route)
         return ['content' => $content, 'title' => $title];
     }
 }
+
 
 // Get the current route
 $route = strtok($_SERVER['REQUEST_URI'], '?'); // Utilisation de strtok pour supprimer les paramètres GET

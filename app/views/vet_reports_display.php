@@ -1,4 +1,11 @@
 <?php
+
+if (!isset($_SESSION['user']) || $_SESSION['user'] !== 'vétérinaire') {
+    // Rediriger vers une page d'erreur ou une page d'accueil
+    header("Location: /login?error=unauthorized");
+    exit();
+}
+
 // Include the database configuration file
 require_once __DIR__.'/../dbconnect.php'; 
 // Include VetReportController

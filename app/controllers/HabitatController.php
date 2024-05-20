@@ -24,12 +24,14 @@ class HabitatController {
 
             // Get the results of the query
             while ($row = $stmt->fetch()) {
+                // Use getAnimalsByHabitat to get animals for this habitat
+                $animals = $this->getAnimalsByHabitat($row['id']);
                 $habitat = new Habitat(
                     $row['id'],
                     $row['name'],
                     $row['images'],
                     $row['description'],
-                    $row['animal_list'],
+                    $animals, // Pass animals obtained from getAnimalsByHabitat
                     $row['habitat_comment'],
                     $this->conn
                 );
@@ -53,13 +55,16 @@ class HabitatController {
             $stmt->execute();
             $row = $stmt->fetch();
 
-            // Create and return a Habitat object
+            // Use getAnimalsByHabitat to get animals for this habitat
+            $animals = $this->getAnimalsByHabitat($row['id']);
+            
+            // Create and return a Habitat object with animals
             return new Habitat(
                 $row['id'],
                 $row['name'],
                 $row['images'],
                 $row['description'],
-                $row['animal_list'],
+                $animals, // Pass animals obtained from getAnimalsByHabitat
                 $row['habitat_comment'],
                 $this->conn
             );
@@ -94,7 +99,8 @@ class HabitatController {
             $habitat->setName($name);
             $habitat->setImages($images);
             $habitat->setDescription($description);
-            $habitat->setAnimalList($animalList);
+            // Update the habitat with the provided animalList
+            $habitat->setAnimals($animalList);
             $habitat->setHabitatComment($habitatComment);
 
             // Update the habitat in the database
@@ -110,26 +116,27 @@ class HabitatController {
     }
 
     // Delete a habitat
-    public function delete($id) {
-        try {
-            // Get the ID of the habitat to delete from the array
-            $id = $id['id'];
-            
-            // Get the habitat by its ID
-            $habitat = $this->getById($id);
+    public function delete($requestData) {
+    try {
+        // Get the ID of the habitat to delete from the request data
+        $id = $requestData['id'];
+        
+        // Get the habitat by its ID
+        $habitat = $this->getById($id);
 
-            // Delete the habitat
-            $habitat->delete();
+        // Delete the habitat
+        $habitat->delete();
 
-            // Redirect to the /habitats route
-            header("Location: /habitats");
-            exit();
+        // Redirect to the /habitats route
+        header("Location: /habitats");
+        exit();
 
-        } catch (\PDOException $e) {
-            // Handle database errors
-            echo "Error: " . $e->getMessage();
-        }
+    } catch (\PDOException $e) {
+        // Handle database errors
+        echo "Error: " . $e->getMessage();
     }
+}
+
 
     // Get habitat name by habitat id
     public function getHabitatName($habitatId) {

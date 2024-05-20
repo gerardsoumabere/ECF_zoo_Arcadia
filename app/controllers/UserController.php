@@ -142,23 +142,21 @@ class UserController {
     }
 
     // Login user
-public function login($conn,$requestData) {
-    
+public function login($requestData) {
     try {
         // Load admin credentials from config file
-               
         $config = require_once __DIR__ . '/../config/adminconfig.php';
         $admin_email = ADMIN_EMAIL;
         $admin_password = ADMIN_PASSWORD;
 
         $email = $requestData['email'];
         $password = $requestData['password'];
-        // Check if user is an admin TODo check password
-        if ($email === $admin_email && $password === $admin_password) {
+        
+        // Check if user is an admin
+        if ($email === $admin_email && password_verify($password, $admin_password)) {
             // Start session and store user data
-                echo "Admin connecté ";
             session_start();
-            $_SESSION['user'] = 'Administrateur';
+            $_SESSION['user'] = 'administrateur';
 
             // Redirect to admin dashboard
             header("Location: /admin");
@@ -172,20 +170,17 @@ public function login($conn,$requestData) {
         $stmt->execute();
         $row = $stmt->fetch();
 
-        // If user found, verify password TODO:remetre passwordverify
-        if ($row && $password=== $row['password']) {
+        // If user found, verify password
+        if ($row && password_verify($password, $row['password'])) {
             // Start session and store user data
             session_start();
-            $_SESSION['user'] = [
-                'id' => $row['id'],
-                'email' => $row['email'],
-                'role' => $row['role']
-            ];
+            $_SESSION['user'] = $row['role']
+            ;
 
             // Redirect to appropriate dashboard based on role
-            if ($row['role'] == 'Employé') {
+            if ($_SESSION['user'] == 'employé') {
                 header("Location: /employee");
-            } elseif ($row['role'] == 'Vétérinaire') {
+            } elseif ($_SESSION['user'] == 'vétérinaire') {
                 header("Location: /vet_dashboard");
             } else {
                 header("Location: /");
@@ -201,6 +196,7 @@ public function login($conn,$requestData) {
         echo "Error: " . $e->getMessage();
     }
 }
+
 
 
     // Logout user

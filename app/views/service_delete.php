@@ -1,14 +1,18 @@
 <?php
-require_once __DIR__ . '/../controllers/ServiceController.php'; // inclure le fichier ServiceController.php
+require_once __DIR__ . '/../controllers/ServiceController.php';
 
-// Créer une instance de ServiceController
-$serviceController = new \Controllers\ServiceController($conn);
+use Controllers\ServiceController;
+
+// Instanciation du ServiceController avec une connexion PDO
+$serviceController = new ServiceController($conn);
 
 // Récupérer l'ID du service à supprimer depuis l'URL
 $id = $_GET['id'] ?? null;
 
-// Vérifier si l'ID est défini
-if ($id) {
+// Vérifier si l'ID est défini et s'il s'agit d'un entier
+if ($id !== null && ctype_digit($id)) {
+    // Convertir l'ID en entier
+    $id = (int) $id;
     // Récupérer le service par son ID
     $service = $serviceController->getById($id);
     ?>

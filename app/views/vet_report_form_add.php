@@ -1,9 +1,12 @@
 <?php
-// Start session
-session_start();
+if (!isset($_SESSION['user']) || $_SESSION['user'] !== 'vétérinaire') {
+    // Rediriger vers une page d'erreur ou une page d'accueil
+    header("Location: /login?error=unauthorized");
+    exit();
+}
 
 // Include the database configuration file
-require_once __DIR__.'/../dbconnect.php'; 
+require_once __DIR__.'/../dbconnect.php';
 // Include VetReportController
 require_once __DIR__.'/../controllers/VetReportController.php';
 
@@ -14,13 +17,13 @@ $vetReportController = new VetReportController($conn);
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitVetReport"])) {
-    $animalId = $_POST["animal_id"];
-    $passingDate = $_POST["passing_date"];
-    $creationDate = $_POST["creation_date"];
-    $detail = $_POST["detail"];
-    
-    // Call the method to add a vet report
-    $vetReportController->add($animalId, $passingDate, $creationDate, $detail);
+$animalId = $_POST["animal_id"];
+$passingDate = $_POST["passing_date"];
+$creationDate = $_POST["creation_date"];
+$detail = $_POST["detail"];
+
+// Call the method to add a vet report
+$vetReportController->add($animalId, $passingDate, $creationDate, $detail);
 }
 ?>
 

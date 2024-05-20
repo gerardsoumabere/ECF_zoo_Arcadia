@@ -1,4 +1,9 @@
-<?php
+<?php 
+    if (!isset($_SESSION['user']) || $_SESSION['user'] !== 'employé') {
+    // Rediriger vers une page d'erreur ou une page d'accueil
+    header("Location: /login?error=unauthorized");
+    exit();
+ }
 require_once __DIR__ . '/../controllers/ReviewController.php';
 
 use Controllers\ReviewController;

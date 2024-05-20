@@ -1,4 +1,11 @@
 <?php
+
+if (!isset($_SESSION['user']) || $_SESSION['user'] !== 'vétérinaire') {
+    // Rediriger vers une page d'erreur ou une page d'accueil
+    header("Location: /login?error=unauthorized");
+    exit();
+}
+
 require_once __DIR__.'/../controllers/VetReportController.php';
 
 use Controllers\VetReportController;
@@ -8,19 +15,20 @@ $vetReportController = new VetReportController($conn);
 $vetReport = null;
 // If an ID is provided in the URL, get the details of the vet report
 if(isset($_GET['id'])) {
-    $vetReport = $vetReportController->getById($_GET['id']);
+$vetReport = $vetReportController->getById($_GET['id']);
 }
 
 // If the form is submitted, update the vet report
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitVetReport"])) {
-    $id = $_POST["id"];
-    $animalId = $_POST["animal_id"];
-    $passingDate = $_POST["passing_date"];
-    $creationDate = $_POST["creation_date"];
-    $detail = $_POST["detail"];
-    
-    // Update the vet report
-    $vetReportController->update($id, $animalId, $passingDate, $creationDate, $detail);
+$id = $_POST["id"];
+$animalId = $_POST["animal_id"];
+$passingDate = $_POST["passing_date"];
+$creationDate = $_POST["creation_date"];
+$detail = $_POST["detail"];
+
+// Update the vet report
+$vetReportController->update($id, $animalId, $passingDate, $creationDate,
+$detail);
 }
 ?>
 

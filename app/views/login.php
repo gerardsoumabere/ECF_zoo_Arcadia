@@ -11,7 +11,7 @@
             <input type="password" class="form-control" id="password"
                 name="password" required>
         </div>
-        <button type="submit" class="btn btn-primary">Se connecter</button>
+        <button type="submit" class="btn btn-primary mt-3">Se connecter</button>
     </form>
     <?php if (isset($_GET['error']) && $_GET['error'] == 'auth_failed'): ?>
     <div class="alert alert-danger mt-3">Email ou mot de passe incorrect</div>

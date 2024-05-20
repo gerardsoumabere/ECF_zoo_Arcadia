@@ -110,13 +110,11 @@ class ServiceController
         }
     }
 
- // Supprimer un service
 // Supprimer un service
 public function delete($id) {
     try {
-        // Récupérer l'ID du service à supprimer depuis le tableau
-        $id = $id['id']; // Todo : Retrouver l'origine du Array to string
-        
+        // // Récupérer l'ID du service à supprimer depuis le tableau
+        $id = $id['id']; 
         // Supprimer le service
         $service = $this->getById($id);
         $service->delete();

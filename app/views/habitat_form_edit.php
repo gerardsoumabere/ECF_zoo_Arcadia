@@ -20,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitHabitat"])) {
     $id = $_POST["id"];
     $name = $_POST["name"];
     $description = $_POST["description"];
-    $animalList = $_POST["animal_list"];
 
     // Vérifier si une nouvelle image a été téléchargée
     if(isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
@@ -41,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitHabitat"])) {
 
     // Mettre à jour l'habitat
     $habitatController->update($id, $name, $image, $description, $animalList, $habitatComment);
+
 }
 ?>
 
@@ -78,13 +78,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitHabitat"])) {
                         class="form-label">Description:</label>
                     <textarea class="form-control" id="description"
                         name="description"><?php echo $habitat->getDescription(); ?></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="animal_list" class="form-label">Liste des
-                        animaux:</label>
-                    <input type="text" class="form-control" id="animal_list"
-                        name="animal_list"
-                        value="<?php echo $habitat->getAnimalList(); ?>">
                 </div>
                 <div class="mb-3">
                     <label for="habitat_comment" class="form-label">Commentaire

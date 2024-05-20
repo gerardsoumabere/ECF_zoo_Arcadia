@@ -15,25 +15,22 @@ $services = $serviceController->index();
 ?>
 
 <div class="container">
-
     <h1>Liste des services</h1>
-
-    <?php foreach ($services as $service): ?>
-    <div class="service">
-        <h2>ID : <?php echo $service->getId(); ?></h2> <!-- Afficher l'ID -->
-        <h3><?php echo $service->getTitle(); ?></h3>
-        <img src="<?php echo $service->getImage(); ?>"
-            alt="<?php echo $service->getTitle(); ?>">
-        <p><?php echo $service->getDescription(); ?></p>
-        <!-- Ajoutez les liens pour la mise à jour et la suppression -->
-        <a
-            href="/services/edit?id=<?php echo $service->getId(); ?>">Modifier</a>
-        <a
-            href="/services/delete?id=<?php echo $service->getId(); ?>">Supprimer</a>
+    <div class="row">
+        <?php foreach ($services as $service): ?>
+        <div class="col-md-4 mb-4">
+            <div class="card" style="width: 18rem;">
+                <img src="<?php echo $service->getImage(); ?>"
+                    class="card-img-top"
+                    alt="<?php echo $service->getTitle(); ?>">
+                <div class="card-body">
+                    <h5 class="card-title"><?php echo $service->getTitle(); ?>
+                    </h5>
+                    <p class="card-text">
+                        <?php echo $service->getDescription(); ?></p>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
-
-    <!-- Bouton "Ajouter un service" -->
-    <a href="/services/add" class="btn btn-primary">Ajouter un service</a>
-
 </div>

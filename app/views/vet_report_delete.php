@@ -1,4 +1,11 @@
 <?php
+
+if (!isset($_SESSION['user']) || $_SESSION['user'] !== 'vétérinaire') {
+    // Rediriger vers une page d'erreur ou une page d'accueil
+    header("Location: /login?error=unauthorized");
+    exit();
+}
+
 require_once __DIR__ . '/../controllers/VetReportController.php';
 
 use Controllers\VetReportController;
@@ -8,19 +15,19 @@ $vetReportController = new VetReportController($conn);
 $vetReport = null;
 // If an ID is provided in the URL, get the details of the vet report
 if(isset($_GET['id'])) {
-    $vetReport = $vetReportController->getById($_GET['id']);
+$vetReport = $vetReportController->getById($_GET['id']);
 }
 
 // If the form is submitted, delete the vet report
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_POST["id"];
-    
-    // Delete the vet report
-    $vetReportController->delete($id);
+$id = $_POST["id"];
 
-    // Redirect to the vet reports list
-    header("Location: /vet_reports");
-    exit();
+// Delete the vet report
+$vetReportController->delete($id);
+
+// Redirect to the vet reports list
+header("Location: /vet_reports");
+exit();
 }
 ?>
 

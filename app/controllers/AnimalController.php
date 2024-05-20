@@ -6,6 +6,7 @@ require_once __DIR__ . '/../models/Animal.php';
 
 use Models\Animal;
 
+
 class AnimalController {
     private $conn;
 
@@ -58,7 +59,7 @@ class AnimalController {
                 $row['name'],
                 $row['race'],
                 $row['image'],
-                $row['habitat_id'], // Utiliser habitat_id à la place de habitat
+                $row['habitat_id'], 
                 $row['animal_status'],
                 $this->conn
             );
@@ -69,10 +70,10 @@ class AnimalController {
     }
 
     // Add an animal
-    public function add($name, $race, $image, $habitat, $animalStatus) {
+    public function add($name, $race, $image, $habitatId, $animalStatus) {
         try {
             // Create a new animal
-            $animal = new Animal(null, $name, $race, $image, $habitat, $animalStatus, $this->conn);
+            $animal = new Animal(null, $name, $race, $image, $habitatId, $animalStatus, $this->conn);
             // Add the new animal to the database
             $animal->save();
 
@@ -86,14 +87,14 @@ class AnimalController {
     }
 
     // Update an animal
-    public function update($id, $name, $race, $image, $habitat, $animalStatus) {
+    public function update($id, $name, $race, $image, $habitatId, $animalStatus) {
         try {
             // Get the animal to update
             $animal = $this->getById($id);
             $animal->setName($name);
             $animal->setRace($race);
             $animal->setImage($image);
-            $animal->setHabitat($habitat);
+            $animal->setHabitatId($habitatId); // Utiliser setHabitatId
             $animal->setAnimalStatus($animalStatus);
 
             // Update the animal in the database
@@ -129,70 +130,52 @@ class AnimalController {
             echo "Error: " . $e->getMessage();
         }
     }
-    // Get habitat name by habitat id
-public function getHabitatName($habitatId) {
+
+    public function getHabitatName($habitatId) {
+        try {
+            // Requête SQL pour obtenir le nom de l'habitat
+            $sql = "SELECT name FROM habitats WHERE id = :habitatId";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':habitatId', $habitatId);
+            $stmt->execute();
+            $row = $stmt->fetch();
+
+            // Retourner le nom de l'habitat
+            return $row['name'];
+        } catch (\PDOException $e) {
+            // Gérer les erreurs de la base de données
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function getAnimalsByHabitat($habitatId) {
     try {
-        $sql = "SELECT name FROM habitats WHERE id = :id";
+        $animals = array();
+        // SQL query to get animals by habitat from the database
+        $sql = "SELECT * FROM animals WHERE habitat_id = :habitatId";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':id', $habitatId);
+        $stmt->bindParam(':habitatId', $habitatId);
         $stmt->execute();
-        $row = $stmt->fetch();
-        return $row['name'];
+
+        // Get the results of the query
+        while ($row = $stmt->fetch()) {
+            $animal = new Animal(
+                $row['id'],
+                $row['name'],
+                $row['race'],
+                $row['image'],
+                $row['habitat_id'], // Utiliser habitat_id à la place de habitat
+                $row['animal_status'],
+                $this->conn
+            );
+            $animals[] = $animal;
+        }
+
+        return $animals; // Return the animals
     } catch (\PDOException $e) {
         // Handle database errors
         echo "Error: " . $e->getMessage();
     }
-}
-
-// Get all habitats
-    public function getHabitats() {
-        try {
-            $habitats = array();
-            // SQL query to get all habitats from the database
-            $sql = "SELECT * FROM habitats";
-            $stmt = $this->conn->query($sql);
-
-            // Get the results of the query
-            while ($row = $stmt->fetch()) {
-                $habitats[] = $row;
-            }
-
-            return $habitats; // Return the habitats
-        } catch (\PDOException $e) {
-            // Handle database errors
-            echo "Error: " . $e->getMessage();
-        }
-    }
-
-    // Get animals by habitat
-    public function getAnimalsByHabitat($habitatId) {
-        try {
-            $animals = array();
-            // SQL query to get animals by habitat from the database
-            $sql = "SELECT * FROM animals WHERE habitat_id = :habitat_id";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':habitat_id', $habitatId);
-            $stmt->execute();
-
-            // Get the results of the query
-            while ($row = $stmt->fetch()) {
-                $animal = new Animal(
-                    $row['id'],
-                    $row['name'],
-                    $row['race'],
-                    $row['image'],
-                    $row['habitat_id'],
-                    $row['animal_status'],
-                    $this->conn
-                );
-                $animals[] = $animal;
-            }
-
-            return $animals; // Return the animals
-        } catch (\PDOException $e) {
-            // Handle database errors
-            echo "Error: " . $e->getMessage();
-        }
     }
 
 }

@@ -88,13 +88,13 @@ if($animal) {
                     <label for="habitat" class="form-label">Habitat:</label>
                     <select class="form-select" id="habitat" name="habitat">
                         <option value="1"
-                            <?php echo $animal->getHabitat() == 1 ? 'selected' : ''; ?>>
+                            <?php echo $animal->getHabitatId() == 1 ? 'selected' : ''; ?>>
                             Savane</option>
                         <option value="2"
-                            <?php echo $animal->getHabitat() == 2 ? 'selected' : ''; ?>>
+                            <?php echo $animal->getHabitatId() == 2 ? 'selected' : ''; ?>>
                             Jungle</option>
                         <option value="3"
-                            <?php echo $animal->getHabitat() == 3 ? 'selected' : ''; ?>>
+                            <?php echo $animal->getHabitatId() == 3 ? 'selected' : ''; ?>>
                             Marais</option>
                     </select>
                 </div>

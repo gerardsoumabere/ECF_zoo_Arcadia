@@ -2,6 +2,7 @@
 
 namespace Models;
 
+
 use Controllers\AnimalController;
 
 class Habitat {
@@ -9,7 +10,7 @@ class Habitat {
     private $name;
     private $images;
     private $description;
-    private $animals; // Change $animalList to $animals
+    private $animals; // 
     private $habitatComment;
     private $conn;
 
@@ -18,7 +19,7 @@ class Habitat {
         $this->name = $name;
         $this->images = $images;
         $this->description = $description;
-        $this->animals = $animals; // Update property name
+        $this->animals = $animals; 
         $this->habitatComment = $habitatComment;
         $this->conn = $conn;
     }

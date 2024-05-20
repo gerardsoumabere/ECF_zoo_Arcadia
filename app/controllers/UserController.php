@@ -154,9 +154,7 @@ public function login($requestData) {
         
         // Check if user is an admin
         if ($email === $admin_email && password_verify($password, $admin_password)) {
-            // Start session and store user data
-            session_start();
-            $_SESSION['user'] = 'administrateur';
+              $_SESSION['user'] = 'administrateur';
 
             // Redirect to admin dashboard
             header("Location: /admin");
@@ -172,8 +170,6 @@ public function login($requestData) {
 
         // If user found, verify password
         if ($row && password_verify($password, $row['password'])) {
-            // Start session and store user data
-            session_start();
             $_SESSION['user'] = $row['role']
             ;
 

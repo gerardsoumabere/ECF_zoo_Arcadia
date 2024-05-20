@@ -1,6 +1,4 @@
 <?php
-// Start session
-session_start();
 
 // Include HabitatController
 require_once __DIR__.'/../controllers/HabitatController.php';

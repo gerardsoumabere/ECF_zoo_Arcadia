@@ -1,14 +1,14 @@
 <?php
-    // Include the HabitatController
-    require_once __DIR__.'/../controllers/HabitatController.php';
+// Include the HabitatController
+require_once __DIR__.'/../controllers/HabitatController.php';
 
-    use Controllers\HabitatController;
+use Controllers\HabitatController;
 
-    // Create an instance of HabitatController
-    $habitatController = new HabitatController($conn);
+// Create an instance of HabitatController
+$habitatController = new HabitatController($conn);
 
-    // Get all habitats
-    $habitats = $habitatController->index();
+// Get all habitats
+$habitats = $habitatController->index();
 ?>
 
 <style>
@@ -72,12 +72,23 @@
                             </li>
                             <?php endforeach; ?>
                         </ul>
+
+                        <?php if (isset($_SESSION['user']) || $_SESSION['user'] == 'administrateur'): ?>
+                        <a href="/habitats/edit?id=<?php echo $habitat->getId(); ?>"
+                            class="btn btn-warning">Modifier</a>
+                        <a href="/habitats/delete?id=<?php echo $habitat->getId(); ?>"
+                            class="btn btn-danger">Supprimer</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
         <?php endforeach; ?>
     </div>
+
+    <?php if (isset($_SESSION['user']) || $_SESSION['user'] == 'administrateur'): ?>
+    <a href="/habitats/add" class="btn btn-primary">Ajouter un habitat</a>
+    <?php endif; ?>
 </div>
 
 <script

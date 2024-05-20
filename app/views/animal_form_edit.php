@@ -1,6 +1,4 @@
 <?php
-// Start session
-session_start();
 
 // Include AnimalController
 require_once __DIR__.'/../controllers/AnimalController.php';

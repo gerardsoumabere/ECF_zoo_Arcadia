@@ -1,6 +1,4 @@
 <?php
-// Start session
-session_start();
 
 // Include the database configuration file
 require_once __DIR__.'/../dbconnect.php'; 

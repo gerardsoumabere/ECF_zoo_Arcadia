@@ -73,7 +73,7 @@ $habitats = $habitatController->index();
                             <?php endforeach; ?>
                         </ul>
 
-                        <?php if (isset($_SESSION['user']) || $_SESSION['user'] == 'administrateur'): ?>
+                        <?php if (isset($_SESSION['user']) && $_SESSION['user'] == 'administrateur'): ?>
                         <a href="/habitats/edit?id=<?php echo $habitat->getId(); ?>"
                             class="btn btn-warning">Modifier</a>
                         <a href="/habitats/delete?id=<?php echo $habitat->getId(); ?>"

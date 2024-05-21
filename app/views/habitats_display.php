@@ -86,7 +86,7 @@ $habitats = $habitatController->index();
         <?php endforeach; ?>
     </div>
 
-    <?php if (isset($_SESSION['user']) || $_SESSION['user'] == 'administrateur'): ?>
+    <?php if (isset($_SESSION['user']) && $_SESSION['user'] == 'administrateur'): ?>
     <a href="/habitats/add" class="btn btn-primary">Ajouter un habitat</a>
     <?php endif; ?>
 </div>

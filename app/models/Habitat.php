@@ -10,7 +10,7 @@ class Habitat {
     private $name;
     private $images;
     private $description;
-    private $animals; // 
+    private $animals; 
     private $habitatComment;
     private $conn;
 
